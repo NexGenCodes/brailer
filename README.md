@@ -233,4 +233,4 @@ Layout is infallible by design: invalid input never reaches it. Validation
 
 ## Licence
 
-Dual-licensed under **MIT OR Apache-2.0** — pick whichever suits your project.
+Licensed under the MIT Licence (permissive — use it in anything, commercial or not).
