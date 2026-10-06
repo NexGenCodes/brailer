@@ -39,21 +39,14 @@ machines with different installed fonts will not produce identical output.
 **From source** (works today):
 
 ```sh
-cargo install --path .
-# or, for a debug-free optimised build
-cargo build --release   # target/release/brailer
+cargo install --git https://github.com/NexGenCodes/brailer
+# or from a checkout: cargo install --path .
 ```
 
-**Coming with the first release** (source tarball + CI-built binaries):
-
-```sh
-brew install brailer
-cargo binstall brailer
-curl -fsSL https://github.com/NexGenCodes/brailer/releases/latest/install.sh | sh
-```
-
-> The Homebrew formula, release binaries and install script are planned, not yet
-> published. Until then, use `cargo install`.
+**CI-built binaries** are attached to each tagged release
+(linux x86_64, macOS x86_64 + arm64) — see
+[releases](https://github.com/NexGenCodes/brailer/releases). A crates.io
+publish, Homebrew formula and one-line install script are still to come.
 
 ## Quickstart
 
