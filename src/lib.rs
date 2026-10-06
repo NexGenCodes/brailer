@@ -78,5 +78,5 @@ pub fn load(path: &Path) -> Result<Document> {
 }
 
 pub fn known_themes() -> Vec<&'static str> {
-    vec!["canary", "editorial"]
+    vec!["canary", "editorial", "midnight"]
 }

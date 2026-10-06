@@ -23,9 +23,19 @@ fn stack(children: &str) -> String {
 }
 
 #[test]
-fn accepts_the_shipped_example() {
-    let doc = brailer::load(std::path::Path::new("examples/editorial.json")).expect("example");
-    assert!(spec::validate(&doc).is_empty());
+fn accepts_every_corpus_spec() {
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/corpus");
+    let mut specs: Vec<_> = std::fs::read_dir(&dir)
+        .expect("tests/corpus dir")
+        .filter_map(|e| e.ok().map(|e| e.path()))
+        .filter(|p| p.extension().is_some_and(|x| x == "json"))
+        .collect();
+    specs.sort();
+    assert!(!specs.is_empty());
+    for path in specs {
+        let doc = brailer::load(&path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+        assert!(spec::validate(&doc).is_empty(), "{}", path.display());
+    }
 }
 
 #[test]
@@ -222,6 +232,7 @@ fn text_prim(x: f32, y: f32, w: f32, h: f32) -> brailer::primitive::Prim {
         fill: "#14110F".into(),
         align: brailer::spec::Align::Start,
         tracking: 0.0,
+        backdrop: brailer::primitive::Backdrop::Solid("#FFFFFF".into()),
     }
 }
 

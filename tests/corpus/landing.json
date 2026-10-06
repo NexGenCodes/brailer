@@ -1,0 +1,102 @@
+{
+  "theme": "canary",
+  "frames": {
+    "desktop": {
+      "canvas": { "width": 1440, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 24, "pad": 40,
+        "children": [
+          {
+            "kind": "grid", "columns": 12, "gap": 24,
+            "children": [
+              { "kind": "stack", "align": "center", "children": [
+                { "kind": "text", "role": "h2", "text": "CEDAR & LEAD" } ] },
+              { "kind": "text", "role": "small", "text": "Graphite" },
+              { "kind": "text", "role": "small", "text": "Wax" },
+              { "kind": "text", "role": "small", "text": "Tools" }
+            ]
+          },
+          {
+            "kind": "grid", "columns": 12, "gap": 24,
+            "children": [
+              {
+                "kind": "card", "radius": 16, "pad": 40, "bg": "#17161A",
+                "children": [
+                  { "kind": "text", "role": "label", "text": "NEW WORK", "color": "#F7D24B", "tracking": 0.14 },
+                  { "kind": "text", "role": "h1", "text": "Graphite, done properly.", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "body", "color": "#FBF9F3",
+                    "text": "Cedar barrels, a first-cut point, and waxed cores graded to true stiffness. Everything a sharpened pencil should be, made in one workshop." },
+                  { "kind": "card", "radius": 10, "pad": 14, "bg": "#F7D24B",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Shop the set", "align": "center" } ] }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "grid", "columns": 3, "gap": 20,
+            "children": [
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Cedar" },
+                  { "kind": "text", "role": "small", "text": "Incense cedar barrels, sharp and aromatic." } ] },
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Wax" },
+                  { "kind": "text", "role": "small", "text": "Waxed cores so the point holds its edge." } ] },
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Crimp" },
+                  { "kind": "text", "role": "small", "text": "Steel crimps from a 1930s ferrule press." } ] }
+            ]
+          },
+          { "kind": "card", "radius": 12, "pad": 24, "bg": "#EFE7DB",
+            "children": [
+              { "kind": "text", "role": "h2", "text": "“The point lasts a fortnight at school.”" },
+              { "kind": "text", "role": "small", "text": "— letter from a customer, 1962", "color": "#655F55" } ] },
+          { "kind": "rule", "thickness": 1 },
+          { "kind": "text", "role": "small", "text": "© Cedar & Lead", "align": "center" }
+        ]
+      }
+    },
+    "mobile": {
+      "canvas": { "width": 390, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 20, "pad": 20,
+        "children": [
+          { "kind": "stack", "gap": 4, "children": [
+            { "kind": "text", "role": "h2", "text": "CEDAR & LEAD" } ] },
+          { "kind": "card", "radius": 14, "pad": 24, "bg": "#17161A",
+            "children": [
+              { "kind": "text", "role": "label", "text": "NEW WORK", "color": "#F7D24B", "tracking": 0.14 },
+              { "kind": "text", "role": "h1", "text": "Graphite, done properly.", "color": "#FBF9F3" },
+              { "kind": "text", "role": "body", "color": "#FBF9F3",
+                "text": "Cedar barrels, a first-cut point, and waxed cores graded to true stiffness. Everything a sharpened pencil should be, made in one workshop." },
+              { "kind": "card", "radius": 10, "pad": 14, "bg": "#F7D24B",
+                "children": [ { "kind": "text", "role": "h3", "text": "Shop the set", "align": "center" } ] }
+            ] },
+          {
+            "kind": "grid", "columns": 3, "gap": 20,
+            "children": [
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Cedar" },
+                  { "kind": "text", "role": "small", "text": "Incense cedar barrels, sharp and aromatic." } ] },
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Wax" },
+                  { "kind": "text", "role": "small", "text": "Waxed cores so the point holds its edge." } ] },
+              { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Crimp" },
+                  { "kind": "text", "role": "small", "text": "Steel crimps from a 1930s ferrule press." } ] }
+            ]
+          },
+          { "kind": "card", "radius": 12, "pad": 20, "bg": "#EFE7DB",
+            "children": [
+              { "kind": "text", "role": "h2", "text": "“The point lasts a fortnight at school.”" },
+              { "kind": "text", "role": "small", "text": "— letter from a customer, 1962", "color": "#655F55" } ] }
+        ]
+      }
+    }
+  }
+}

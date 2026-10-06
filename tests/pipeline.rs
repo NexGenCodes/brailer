@@ -1,12 +1,25 @@
 use std::collections::HashSet;
 use std::io::Cursor;
-use std::path::Path;
 
 use brailer::primitive::Prim;
-use brailer::{load, render};
+use brailer::render;
 
 fn example() -> (brailer::Pipeline, brailer::Scene) {
-    let doc = load(Path::new("examples/editorial.json")).expect("load spec");
+    // Self-contained legacy fixture (canvas+root -> the implicit `design`
+    // frame) that exercises every palette token: ink headings, muted body,
+    // accent label, line rule, surface card on a paper canvas.
+    let json = r##"{"canvas":{"width":1440,"background":"#FAF7F2"},"theme":"editorial","root":{"kind":"stack","gap":16,"pad":48,"children":[
+        {"kind":"text","text":"NEW WORK","role":"label"},
+        {"kind":"text","text":"Solid ash, hand-planed","role":"h1"},
+        {"kind":"text","text":"A seat three, without a central leg, finished in one workshop.","role":"body"},
+        {"kind":"rule"},
+        {"kind":"card","children":[
+            {"kind":"text","text":"Oak","role":"h3"},
+            {"kind":"text","text":"Quarter-sawn, air-dried.","role":"small"}
+        ]}
+    ]}}"##;
+    let doc: brailer::spec::Document = serde_json::from_str(json).expect("parse");
+    assert!(brailer::spec::validate(&doc).is_empty());
     let pipe = brailer::Pipeline::new(&doc.theme).expect("theme");
     let frame = doc
         .frames_effective()

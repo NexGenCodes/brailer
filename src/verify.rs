@@ -1,4 +1,4 @@
-use crate::primitive::{Prim, Scene};
+use crate::primitive::{Backdrop, Prim, Scene};
 use crate::theme::Theme;
 
 #[derive(Debug, Default)]
@@ -108,6 +108,16 @@ pub fn scene(scene: &Scene, pad: f32) -> Report {
         {
             rep.errors.push(format!("#{i} raw svg is invalid: {e}"));
         }
+        if let Prim::Text {
+            fill,
+            size,
+            text,
+            backdrop,
+            ..
+        } = p
+        {
+            check_text_contrast(&mut rep, i, fill, *size, text, backdrop);
+        }
     }
 
     let mut rects: Vec<(usize, f32, f32, f32, f32)> = Vec::new();
@@ -160,6 +170,33 @@ pub fn scene(scene: &Scene, pad: f32) -> Report {
 
 pub const MAX_DIM: f32 = 16000.0;
 pub const MAX_COLLISION_CHECK: usize = 20_000;
+
+/// WCAG: 4.5:1 for body text, 3.0:1 for large text (≥ 24 px ≈ 18 pt). A text
+/// prim is checked against the nearest ancestor fill resolved during layout;
+/// a gradient backdrop is checked at both stops and the worse side is reported.
+/// Colours we cannot parse (e.g. 8-digit hex with alpha) are skipped rather
+/// than flagged, so the warning never cries wolf on fills we did not verify.
+fn check_text_contrast(
+    rep: &mut Report,
+    idx: usize,
+    fill: &str,
+    size: f32,
+    text: &str,
+    backdrop: &Backdrop,
+) {
+    let Some(fg) = parse_hex(fill) else { return };
+    let min = if size >= 24.0 { 3.0 } else { 4.5 };
+    for stop in backdrop.stops() {
+        let Some(bg) = parse_hex(stop) else { continue };
+        let r = contrast(fg, bg);
+        if r < min {
+            let snippet: String = text.chars().take(24).collect();
+            rep.contrast.push(format!(
+                "#{idx} text \"{snippet}\" ({fill} on {stop}) ratio {r:.2} < {min} (at {size:.0}px)"
+            ));
+        }
+    }
+}
 
 fn check_extent(rep: &mut Report, scene: &Scene) {
     if !scene.width.is_finite() || !scene.height.is_finite() {

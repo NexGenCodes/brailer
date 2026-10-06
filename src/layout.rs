@@ -1,5 +1,5 @@
 use crate::fonts::FontBook;
-use crate::primitive::{Prim, Scene};
+use crate::primitive::{Backdrop, Prim, Scene};
 use crate::spec::{Align, Fill, Frame, Node, Shadow};
 use crate::theme::{TextRole, Theme};
 
@@ -239,12 +239,21 @@ pub fn build(frame: &Frame, ctx: &Ctx) -> Scene {
         0.0,
         frame.canvas.width,
         ctx,
+        &Backdrop::Solid(frame.canvas.background.clone()),
         &mut scene.prims,
     );
     scene
 }
 
-fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>) {
+fn place(
+    node: &Node,
+    x: f32,
+    y: f32,
+    avail: f32,
+    ctx: &Ctx,
+    backdrop: &Backdrop,
+    out: &mut Vec<Prim>,
+) {
     let theme = ctx.theme;
     match node {
         Node::Stack {
@@ -259,6 +268,10 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             let gap = gap.unwrap_or(theme.space.base);
             let align = align.unwrap_or(Align::Start);
             let inner_w = (avail - pad * 2.0).max(1.0);
+            let child_backdrop = match bg {
+                Some(fill) => Backdrop::from_fill(fill),
+                None => backdrop.clone(),
+            };
             if bg.is_some() {
                 let h = measure(node, avail, ctx).h;
                 push_rect(
@@ -288,7 +301,7 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                     Align::Center => (x + pad + (inner_w - ext.w) / 2.0, ext.w),
                     Align::End => (x + avail - pad - ext.w, ext.w),
                 };
-                place(child, cx, cy, cw, ctx, out);
+                place(child, cx, cy, cw, ctx, &child_backdrop, out);
                 cy += ext.h;
             }
         }
@@ -328,10 +341,22 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             let (rects, _) = grid_metrics(children, cols, col_w, gap, ctx);
             let origin_x = x + pad;
             let origin_y = y + pad;
+            let child_backdrop = match bg {
+                Some(fill) => Backdrop::from_fill(fill),
+                None => backdrop.clone(),
+            };
             for (i, child) in children.iter().enumerate() {
                 let (_, child_node) = span_of(child);
                 let (gx, gy, w, _) = rects[i];
-                place(child_node, origin_x + gx, origin_y + gy, w, ctx, out);
+                place(
+                    child_node,
+                    origin_x + gx,
+                    origin_y + gy,
+                    w,
+                    ctx,
+                    &child_backdrop,
+                    out,
+                );
             }
         }
         Node::Text {
@@ -373,6 +398,7 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                     fill: fill.clone(),
                     align,
                     tracking: tracking_px,
+                    backdrop: backdrop.clone(),
                 });
             }
         }
@@ -413,13 +439,17 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                 theme,
             );
             let mut cy = y + pad;
+            let card_backdrop = match bg {
+                Some(fill) => Backdrop::from_fill(fill),
+                None => Backdrop::Solid(theme.palette.surface.clone()),
+            };
             for child in children {
                 if cy > y + pad {
                     cy += theme.space.base;
                 }
                 let inner = (avail - pad * 2.0).max(1.0);
                 let child_ext = measure(child, inner, ctx);
-                place(child, x + pad, cy, inner, ctx, out);
+                place(child, x + pad, cy, inner, ctx, &card_backdrop, out);
                 cy += child_ext.h;
             }
         }
@@ -445,7 +475,7 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                 body: svg.clone(),
             });
         }
-        Node::Cell { child, .. } => place(child, x, y, avail, ctx, out),
+        Node::Cell { child, .. } => place(child, x, y, avail, ctx, backdrop, out),
         Node::Component { .. } => {}
     }
 }

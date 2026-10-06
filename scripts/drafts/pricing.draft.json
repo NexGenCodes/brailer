@@ -1,0 +1,97 @@
+{
+  "theme": "canary",
+  "frames": {
+    "desktop": {
+      "canvas": { "width": 1440, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 24, "pad": 48,
+        "children": [
+          { "kind": "text", "role": "label", "text": "MEMBERSHIP", "tracking": 0.12 },
+          { "kind": "text", "role": "h1", "text": "Three ways to sharpen." },
+          {
+            "kind": "grid", "columns": 3, "gap": 24,
+            "children": [
+              { "kind": "card", "radius": 16, "pad": 28, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Starter" },
+                  { "kind": "text", "role": "body", "text": "$9", "color": "#17161A" },
+                  { "kind": "text", "role": "small", "text": "Six pencils a month, one grade." },
+                  { "kind": "text", "role": "small", "text": "— HB core" },
+                  { "kind": "text", "role": "small", "text": "— plain barrel" },
+                  { "kind": "text", "role": "small", "text": "— free sharpen" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#EFE7DB",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] },
+              { "kind": "card", "radius": 16, "pad": 28, "bg": "#17161A",
+                "children": [
+                  { "kind": "text", "role": "label", "text": "MOST POPULAR", "color": "#F7D24B", "tracking": 0.1 },
+                  { "kind": "text", "role": "h3", "text": "Studio", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "body", "text": "$19", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "Twelve pencils, mixed grades.", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— all hardnesses", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— heat-stamped barrel", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— sharpeners, every order", "color": "#FBF9F3" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#F7D24B",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] },
+              { "kind": "card", "radius": 16, "pad": 28, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Ward" },
+                  { "kind": "text", "role": "body", "text": "$49", "color": "#17161A" },
+                  { "kind": "text", "role": "small", "text": "Thirty pencils for a whole class." },
+                  { "kind": "text", "role": "small", "text": "— 30 mixed pencils" },
+                  { "kind": "text", "role": "small", "text": "— classroom box" },
+                  { "kind": "text", "role": "small", "text": "— priority supply" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#EFE7DB",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] }
+            ]
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "canvas": { "width": 390, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 20, "pad": 20,
+        "children": [
+          { "kind": "text", "role": "label", "text": "MEMBERSHIP", "tracking": 0.12 },
+          { "kind": "text", "role": "h1", "text": "Three ways to sharpen." },
+          {
+            "kind": "grid", "columns": 3, "gap": 24,
+            "children": [
+              { "kind": "card", "radius": 16, "pad": 24, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Starter" },
+                  { "kind": "text", "role": "body", "text": "$9", "color": "#17161A" },
+                  { "kind": "text", "role": "small", "text": "Six pencils a month, one grade." },
+                  { "kind": "text", "role": "small", "text": "— HB core" },
+                  { "kind": "text", "role": "small", "text": "— plain barrel" },
+                  { "kind": "text", "role": "small", "text": "— free sharpen" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#EFE7DB",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] },
+              { "kind": "card", "radius": 16, "pad": 24, "bg": "#17161A",
+                "children": [
+                  { "kind": "text", "role": "label", "text": "MOST POPULAR", "color": "#F7D24B", "tracking": 0.1 },
+                  { "kind": "text", "role": "h3", "text": "Studio", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "body", "text": "$19", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "Twelve pencils, mixed grades.", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— all hardnesses", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— heat-stamped barrel", "color": "#FBF9F3" },
+                  { "kind": "text", "role": "small", "text": "— sharpeners, every order", "color": "#FBF9F3" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#F7D24B",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] },
+              { "kind": "card", "radius": 16, "pad": 24, "bg": "#FFFFFF",
+                "children": [
+                  { "kind": "text", "role": "h3", "text": "Ward" },
+                  { "kind": "text", "role": "body", "text": "$49", "color": "#17161A" },
+                  { "kind": "text", "role": "small", "text": "Thirty pencils for a whole class." },
+                  { "kind": "text", "role": "small", "text": "— 30 mixed pencils" },
+                  { "kind": "text", "role": "small", "text": "— classroom box" },
+                  { "kind": "text", "role": "small", "text": "— priority supply" },
+                  { "kind": "card", "radius": 10, "pad": 13, "bg": "#EFE7DB",
+                    "children": [ { "kind": "text", "role": "h3", "text": "Choose", "align": "center" } ] } ] }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

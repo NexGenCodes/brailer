@@ -1,4 +1,33 @@
-use crate::spec::{Align, Fit, Shadow};
+use crate::spec::{Align, Fill, Fit, Shadow};
+
+/// What a text primitive is drawn on top of, resolved during layout from the
+/// nearest ancestor fill (card/stack/grid `bg`, else the canvas). Gradients
+/// carry both stops so contrast can be checked at both ends.
+#[derive(Debug, Clone)]
+pub enum Backdrop {
+    None,
+    Solid(String),
+    Gradient(String, String),
+}
+
+impl Backdrop {
+    pub fn from_fill(fill: &Fill) -> Backdrop {
+        match fill {
+            Fill::Solid(c) => Backdrop::Solid(c.clone()),
+            Fill::Linear(g) => Backdrop::Gradient(g.from.clone(), g.to.clone()),
+        }
+    }
+
+    /// Backdrop stops as individual hexes; empty when the fill cannot be
+    /// reduced to flat colours.
+    pub fn stops(&self) -> Vec<&str> {
+        match self {
+            Backdrop::None => Vec::new(),
+            Backdrop::Solid(c) => vec![c.as_str()],
+            Backdrop::Gradient(a, b) => vec![a.as_str(), b.as_str()],
+        }
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Scene {
@@ -34,6 +63,7 @@ pub enum Prim {
         fill: String,
         align: Align,
         tracking: f32,
+        backdrop: Backdrop,
     },
     Rule {
         x: f32,

@@ -285,3 +285,72 @@ fn frames_render_multiple_scenes_and_filter_by_name() {
     assert!(only.join("mob@1x.png").exists());
     assert!(!only.join("desk@1x.png").exists());
 }
+
+#[test]
+fn contrast_catches_ink_on_ink_band() {
+    let json = r##"{"canvas":{"width":800,"background":"#FBF9F3"},"theme":"canary","root":{"kind":"stack","gap":16,"pad":24,"children":[
+        {"kind":"stack","pad":24,"bg":"#17161A","children":[
+            {"kind":"text","text":"readable","role":"h2","color":"#FBF9F3"},
+            {"kind":"text","text":"unreadable","role":"h2"}
+        ]}
+    ]}}"##;
+    let (pipe, scene) = scene_of(json);
+    let rep = pipe.verify(&scene);
+    assert!(rep.errors.is_empty() && rep.out_of_bounds.is_empty());
+    assert_eq!(
+        rep.contrast.len(),
+        1,
+        "only the ink-on-ink line should warn: {:?}",
+        rep.contrast
+    );
+    assert!(rep.contrast[0].contains("unreadable"), "{:?}", rep.contrast);
+}
+
+#[test]
+fn contrast_checks_both_gradient_stops() {
+    // from is dark (ink text fails), to is light (ink text passes): must warn once.
+    let json = r##"{"canvas":{"width":800,"background":"#FBF9F3"},"theme":"canary","root":{"kind":"stack","pad":24,"bg":{"from":"#17161A","to":"#FBF9F3","angle":90},"children":[
+        {"kind":"text","text":"over the gradient","role":"h3"}
+    ]}}"##;
+    let (pipe, scene) = scene_of(json);
+    let rep = pipe.verify(&scene);
+    assert_eq!(rep.contrast.len(), 1, "{:?}", rep.contrast);
+    assert!(
+        rep.contrast[0].contains("#17161A"),
+        "the dark stop is the failure: {:?}",
+        rep.contrast
+    );
+}
+
+#[test]
+fn contrast_uses_large_text_threshold() {
+    // #8F8A83 on #FBF9F3 is 3.25 — fails body text (4.5) but passes display (3.0).
+    let json = r##"{"canvas":{"width":800,"background":"#FBF9F3"},"theme":"midnight","root":{"kind":"stack","pad":24,"bg":"#FBF9F3","children":[
+        {"kind":"text","text":"BIG","role":"display","color":"#8F8A83"},
+        {"kind":"text","text":"small muted on white","role":"body","color":"#8F8A83"}
+    ]}}"##;
+    let (pipe, scene) = scene_of(json);
+    let rep = pipe.verify(&scene);
+    assert_eq!(rep.contrast.len(), 1, "{:?}", rep.contrast);
+    assert!(
+        rep.contrast[0].contains("small muted"),
+        "{:?}",
+        rep.contrast
+    );
+}
+
+#[test]
+fn contrast_skips_named_colours_it_cannot_measure() {
+    // `transparent`/`currentColor` are valid fills but have no computable
+    // luminance — the warning must skip them rather than cry wolf.
+    let json = r##"{"canvas":{"width":800,"background":"#FBF9F3"},"theme":"canary","root":{"kind":"stack","pad":24,"bg":"#17161A","children":[
+        {"kind":"text","text":"ghost text","role":"body","color":"transparent"}
+    ]}}"##;
+    let (pipe, scene) = scene_of(json);
+    let rep = pipe.verify(&scene);
+    assert!(
+        rep.contrast.is_empty(),
+        "unmeasurable colours must not be flagged: {:?}",
+        rep.contrast
+    );
+}

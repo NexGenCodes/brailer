@@ -30,8 +30,9 @@ Because `resvg` is pure Rust. That single fact decides everything else:
 - **Zero runtime dependencies.** No X11, no fontconfig, no Inkscape, no browser.
 - Go cannot reach `resvg` without cgo, which breaks every one of those guarantees.
 
-Rasterisation is deterministic and identical on every machine, because the font
-discovery, shaping and rendering all happen inside one crate.
+Rasterisation is deterministic **given the same fonts** — shaping and rendering
+all happen inside one crate, but fonts are discovered from the local OS, so two
+machines with different installed fonts will not produce identical output.
 
 ## Install
 
@@ -158,8 +159,9 @@ Apache-2.0).
 X11, no fontconfig, no browser.
 
 **Time:** ~310 ms for a typical 1440×1087 page (1× + 2×), ~1 s for a full-length
-(≈3,300 px) page. Layout and SVG generation are 1–3 ms; rasterisation is
-effectively the whole cost.
+(≈3,300 px) page — measured on one development machine, not a CI benchmark.
+Layout and SVG generation are 1–3 ms; rasterisation is effectively the whole
+cost. Re-run `python3 scripts/bench.py` on your hardware to get your own numbers.
 
 **Memory:** 158 MB peak for that full page at 1× + 2× (two rasters held at
 once). A single 1440×1087 render is ~10 MB. The 16,000 px output cap is what
@@ -196,9 +198,10 @@ everything passed. `verify --json` gives the same numbers for a fix loop.
 - **Crisp output.** Rules snap to the pixel grid; font selection is verified by
   decoding the PNG and asserting every used palette colour actually landed in it.
 
-Measured on a 1440×1087, 30-primitive spec: **verify 10 ms, render 312 ms**
-(layout 1 ms, SVG 1 ms, raster 310 ms). A 12,801-primitive stress spec verifies
-in **80 ms**.
+Measured on a 1440×1087, 30-primitive spec on one dev machine: **verify ~10 ms,
+render ~310 ms** (layout 1 ms, SVG 1 ms, raster 310 ms). A 12,801-primitive
+stress spec verifies in **80 ms**. These are not CI benchmarks — run
+`python3 scripts/bench.py` to re-measure on your hardware.
 
 ## Architecture
 
@@ -220,6 +223,13 @@ Layout is infallible by design: invalid input never reaches it. Validation
 
 - **You cannot see the output.** Verification is structural, geometric and
   pixel-statistical. Aesthetic review needs a human or a vision model.
+- **Text shaping is simple.** The renderer is resvg, not Chromium: no CSS, no
+  RTL bidi, no complex-script shaping, no CJK-aware line breaking, no
+  hyphenation. Latin-language design is solid; multilingual design is a real
+  gap today.
+- **Fonts come from the OS.** Output depends on what the local system has
+  installed; the same spec renders differently on machines with different
+  fonts. Pin a font set in CI if identical output matters.
 - **Responsive is hand-authored, not automatic.** Desktop and mobile frames
   are both authored in the spec; the engine does not reflow a layout
   automatically. Same content, two compositions — that shared content can and

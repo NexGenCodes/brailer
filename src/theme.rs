@@ -151,6 +151,40 @@ pub fn builtin(name: &str) -> Option<Theme> {
                 lg: 20.0,
             },
         }),
+        // Dark storefront: same dense canary scale, inverted palette. Band-red
+        // is lifted to #E55B53 so it still clears 4.5:1 on both bg and surface.
+        "midnight" => Some(Theme {
+            name: "midnight".into(),
+            palette: Palette {
+                bg: "#131317".into(),
+                surface: "#1E1E25".into(),
+                ink: "#F5F3EC".into(),
+                muted: "#A7A29B".into(),
+                accent: "#E55B53".into(),
+                accent_soft: "#F7D24B".into(),
+                line: "#3B3B46".into(),
+            },
+            type_scale: TypeScale {
+                display: 64.0,
+                h1: 40.0,
+                h2: 28.0,
+                h3: 19.0,
+                body: 15.0,
+                small: 13.0,
+                label: 11.0,
+                leading: 1.3,
+                measure: 560.0,
+            },
+            space: Space {
+                base: 8.0,
+                section: 72.0,
+            },
+            radius: Radius {
+                sm: 4.0,
+                md: 10.0,
+                lg: 20.0,
+            },
+        }),
         "editorial" => Some(Theme {
             name: "editorial".into(),
             palette: Palette {

@@ -1,0 +1,85 @@
+{
+  "theme": "canary",
+  "frames": {
+    "desktop": {
+      "canvas": { "width": 1440, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 20, "pad": 40,
+        "children": [
+          { "kind": "text", "role": "h1", "text": "Account settings" },
+          {
+            "kind": "grid", "columns": 12, "gap": 24,
+            "children": [
+              { "kind": "cell", "span": 3, "child": { "kind": "stack", "gap": 8,
+                "children": [
+                  { "kind": "text", "role": "small", "text": "Profile", "color": "#B3261E" },
+                  { "kind": "text", "role": "small", "text": "Shipping" },
+                  { "kind": "text", "role": "small", "text": "Billing" },
+                  { "kind": "text", "role": "small", "text": "Notifications" } ] } },
+              { "kind": "cell", "span": 9, "child": { "kind": "stack", "gap": 20,
+                "children": [
+                  { "kind": "card", "radius": 12, "pad": 24, "bg": "#FFFFFF",
+                    "children": [
+                      { "kind": "text", "role": "h2", "text": "Profile" },
+                      { "kind": "text", "role": "label", "text": "NAME" },
+                      { "kind": "text", "role": "body", "text": "Ana Villanueva" },
+                      { "kind": "text", "role": "label", "text": "EMAIL" },
+                      { "kind": "text", "role": "body", "text": "ana@studio.example" },
+                      { "kind": "card", "radius": 10, "pad": 13, "bg": "#17161A",
+                        "children": [ { "kind": "text", "role": "h3", "text": "Save changes", "color": "#FBF9F3", "align": "center" } ] } ] },
+                  { "kind": "card", "radius": 12, "pad": 24, "bg": "#FFFFFF",
+                    "children": [
+                      { "kind": "text", "role": "h2", "text": "Shipping" },
+                      { "kind": "text", "role": "label", "text": "ADDRESS" },
+                      { "kind": "text", "role": "body", "text": "14 Cedar Row, Portland, OR 97205" },
+                      { "kind": "card", "radius": 10, "pad": 13, "bg": "#17161A",
+                        "children": [ { "kind": "text", "role": "h3", "text": "Save changes", "color": "#FBF9F3", "align": "center" } ] } ] },
+                  { "kind": "card", "radius": 12, "pad": 24, "bg": "#FFFFFF",
+                    "border": "#B3261E",
+                    "children": [
+                      { "kind": "text", "role": "h2", "text": "Danger zone" },
+                      { "kind": "text", "role": "body", "text": "Deleting your account is final. This cannot be undone, and your order history is removed." },
+                      { "kind": "card", "radius": 10, "pad": 13, "bg": "#B3261E",
+                        "children": [ { "kind": "text", "role": "h3", "text": "Delete account", "color": "#FBF9F3", "align": "center" } ] } ] }
+                ] } }
+            ]
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "canvas": { "width": 390, "background": "#FBF9F3" },
+      "root": {
+        "kind": "stack", "gap": 16, "pad": 20,
+        "children": [
+          { "kind": "text", "role": "h1", "text": "Account settings" },
+          { "kind": "stack", "gap": 6, "children": [
+            { "kind": "text", "role": "small", "text": "Profile", "color": "#B3261E" },
+            { "kind": "text", "role": "small", "text": "Shipping   Billing   Notifications" } ] },
+          { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+            "children": [
+              { "kind": "text", "role": "h2", "text": "Profile" },
+              { "kind": "text", "role": "label", "text": "NAME" },
+              { "kind": "text", "role": "body", "text": "Ana Villanueva" },
+              { "kind": "text", "role": "label", "text": "EMAIL" },
+              { "kind": "text", "role": "body", "text": "ana@studio.example" },
+              { "kind": "card", "radius": 10, "pad": 13, "bg": "#17161A",
+                "children": [ { "kind": "text", "role": "h3", "text": "Save changes", "color": "#FBF9F3", "align": "center" } ] } ] },
+          { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF",
+            "children": [
+              { "kind": "text", "role": "h2", "text": "Shipping" },
+              { "kind": "text", "role": "label", "text": "ADDRESS" },
+              { "kind": "text", "role": "body", "text": "14 Cedar Row, Portland, OR 97205" },
+              { "kind": "card", "radius": 10, "pad": 13, "bg": "#17161A",
+                "children": [ { "kind": "text", "role": "h3", "text": "Save changes", "color": "#FBF9F3", "align": "center" } ] } ] },
+          { "kind": "card", "radius": 12, "pad": 20, "bg": "#FFFFFF", "border": "#B3261E",
+            "children": [
+              { "kind": "text", "role": "h2", "text": "Danger zone" },
+              { "kind": "text", "role": "body", "text": "Deleting your account is final. This cannot be undone." },
+              { "kind": "card", "radius": 10, "pad": 13, "bg": "#B3261E",
+                "children": [ { "kind": "text", "role": "h3", "text": "Delete account", "color": "#FBF9F3", "align": "center" } ] } ] }
+        ]
+      }
+    }
+  }
+}
