@@ -1,0 +1,154 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Theme {
+    pub name: String,
+    pub palette: Palette,
+    pub type_scale: TypeScale,
+    pub space: Space,
+    pub radius: Radius,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Palette {
+    pub bg: String,
+    pub surface: String,
+    pub ink: String,
+    pub muted: String,
+    pub accent: String,
+    pub accent_soft: String,
+    pub line: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TypeScale {
+    pub display: f32,
+    pub h1: f32,
+    pub h2: f32,
+    pub h3: f32,
+    pub body: f32,
+    pub small: f32,
+    pub label: f32,
+    pub leading: f32,
+    pub measure: f32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Space {
+    pub base: f32,
+    pub section: f32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Radius {
+    pub sm: f32,
+    pub md: f32,
+    pub lg: f32,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TextRole {
+    Display,
+    H1,
+    H2,
+    H3,
+    Body,
+    Small,
+    Label,
+}
+
+impl TextRole {
+    pub fn all() -> [TextRole; 7] {
+        [
+            TextRole::Display,
+            TextRole::H1,
+            TextRole::H2,
+            TextRole::H3,
+            TextRole::Body,
+            TextRole::Small,
+            TextRole::Label,
+        ]
+    }
+}
+
+impl Theme {
+    pub fn size(&self, role: TextRole) -> f32 {
+        let s = &self.type_scale;
+        match role {
+            TextRole::Display => s.display,
+            TextRole::H1 => s.h1,
+            TextRole::H2 => s.h2,
+            TextRole::H3 => s.h3,
+            TextRole::Body => s.body,
+            TextRole::Small => s.small,
+            TextRole::Label => s.label,
+        }
+    }
+
+    pub fn leading(&self, role: TextRole) -> f32 {
+        let s = &self.type_scale;
+        match role {
+            TextRole::Display => s.display * s.leading * 0.86,
+            TextRole::H1 => s.h1 * s.leading * 0.9,
+            TextRole::H2 => s.h2 * s.leading,
+            TextRole::H3 => s.h3 * s.leading * 1.1,
+            TextRole::Body => s.body * s.leading * 1.25,
+            TextRole::Small => s.small * s.leading * 1.25,
+            TextRole::Label => s.label * s.leading * 1.1,
+        }
+    }
+
+    pub fn ink_for(&self, role: TextRole) -> &str {
+        match role {
+            TextRole::Display | TextRole::H1 | TextRole::H2 | TextRole::H3 => &self.palette.ink,
+            TextRole::Body | TextRole::Small => &self.palette.muted,
+            TextRole::Label => &self.palette.accent,
+        }
+    }
+
+    pub fn family_for(&self, role: TextRole) -> &'static str {
+        match role {
+            TextRole::Display | TextRole::H1 | TextRole::H2 => "serif",
+            _ => "sans",
+        }
+    }
+}
+
+pub fn builtin(name: &str) -> Option<Theme> {
+    match name {
+        "editorial" => Some(Theme {
+            name: "editorial".into(),
+            palette: Palette {
+                bg: "#FAF7F2".into(),
+                surface: "#EFE7DB".into(),
+                ink: "#14110F".into(),
+                muted: "#6B6259".into(),
+                accent: "#A0492B".into(),
+                accent_soft: "#EADFD2".into(),
+                line: "#CEC2AE".into(),
+            },
+            type_scale: TypeScale {
+                display: 76.0,
+                h1: 48.0,
+                h2: 32.0,
+                h3: 21.0,
+                body: 16.0,
+                small: 13.0,
+                label: 12.0,
+                leading: 1.32,
+                measure: 620.0,
+            },
+            space: Space {
+                base: 8.0,
+                section: 96.0,
+            },
+            radius: Radius {
+                sm: 4.0,
+                md: 8.0,
+                lg: 16.0,
+            },
+        }),
+        _ => None,
+    }
+}

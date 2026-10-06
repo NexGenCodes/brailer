@@ -1,0 +1,1043 @@
+{
+ "canvas": {
+  "width": 1440,
+  "background": "#FAF7F2"
+ },
+ "theme": "editorial",
+ "root": {
+  "kind": "stack",
+  "gap": 0,
+  "pad": 0,
+  "children": [
+   {
+    "kind": "stack",
+    "gap": 0,
+    "pad": 14,
+    "children": [
+     {
+      "kind": "text",
+      "text": "FREE SHIPPING OVER $60  ·  30-DAY RETURNS",
+      "role": "label",
+      "align": "center",
+      "color": "#FAF7F2"
+     }
+    ],
+    "bg": "#14110F"
+   },
+   {
+    "kind": "grid",
+    "columns": 3,
+    "gap": 16,
+    "pad": 32,
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 0,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "text",
+        "text": "KŌRA",
+        "role": "h2",
+        "color": "#14110F"
+       }
+      ]
+     },
+     {
+      "kind": "grid",
+      "columns": 3,
+      "gap": 32,
+      "pad": 24,
+      "children": [
+       {
+        "kind": "text",
+        "text": "Shop",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "Rituals",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "Journal",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       }
+      ]
+     },
+     {
+      "kind": "stack",
+      "gap": 0,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 0,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "card",
+          "pad": 14,
+          "radius": 24,
+          "bg": "#14110F",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Cart · 0",
+            "role": "label",
+            "align": "center",
+            "color": "#FAF7F2"
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "align": "end"
+     }
+    ],
+    "bg": "#FAF7F2"
+   },
+   {
+    "kind": "grid",
+    "columns": 2,
+    "gap": 0,
+    "pad": 0,
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 10,
+      "pad": 40,
+      "children": [
+       {
+        "kind": "text",
+        "text": "NEW SEASON",
+        "role": "label",
+        "color": "#C2643C"
+       },
+       {
+        "kind": "text",
+        "text": "Scents that hold the room",
+        "role": "h1",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "Hand-poured candles and reed diffusers, made in small batches in our Lisbon studio. Cedar, amber, vetiver — nothing synthetic.",
+        "role": "body",
+        "color": "#8A8078",
+        "max_measure": 520
+       },
+       {
+        "kind": "spacer",
+        "height": 8
+       },
+       {
+        "kind": "stack",
+        "gap": 0,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "card",
+          "pad": 16,
+          "radius": 26,
+          "bg": "#14110F",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Shop the collection",
+            "role": "label",
+            "align": "center",
+            "color": "#FAF7F2"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "kind": "spacer",
+        "height": 16
+       },
+       {
+        "kind": "grid",
+        "columns": 3,
+        "gap": 16,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "12,400",
+          "role": "h3",
+          "align": "start",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "4.9 / 5",
+          "role": "h3",
+          "align": "start",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "14 days",
+          "role": "h3",
+          "align": "start",
+          "color": "#14110F"
+         }
+        ]
+       },
+       {
+        "kind": "grid",
+        "columns": 3,
+        "gap": 16,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "reviews",
+          "role": "small",
+          "align": "start",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "average",
+          "role": "small",
+          "align": "start",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "cure time",
+          "role": "small",
+          "align": "start",
+          "color": "#8A8078"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "kind": "grid",
+      "columns": 2,
+      "gap": 20,
+      "pad": 40,
+      "children": [
+       {
+        "kind": "card",
+        "pad": 20,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "raw",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+          "height": 160
+         },
+         {
+          "kind": "text",
+          "text": "Ember Candle",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Sandalwood · Amber · Smoke",
+          "role": "small",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "$48",
+          "role": "small",
+          "color": "#14110F"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 20,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "raw",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+          "height": 160
+         },
+         {
+          "kind": "text",
+          "text": "Reed Diffuser",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Cedar · Bergamot · Vetiver",
+          "role": "small",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "$62",
+          "role": "small",
+          "color": "#14110F"
+         }
+        ],
+        "bg": "#FFFFFF"
+       }
+      ]
+     }
+    ],
+    "bg": "#EFE7DB"
+   },
+   {
+    "kind": "stack",
+    "gap": 8,
+    "pad": 32,
+    "children": [
+     {
+      "kind": "text",
+      "text": "FEATURED IN",
+      "role": "label",
+      "color": "#8A8078"
+     },
+     {
+      "kind": "grid",
+      "columns": 5,
+      "gap": 40,
+      "pad": 16,
+      "children": [
+       {
+        "kind": "text",
+        "text": "KINFOLK",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "MONOCLE",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "CEREAL",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "DWELL",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       },
+       {
+        "kind": "text",
+        "text": "VOGUE",
+        "role": "small",
+        "align": "center",
+        "color": "#14110F"
+       }
+      ]
+     }
+    ],
+    "bg": "#FAF7F2"
+   },
+   {
+    "kind": "rule"
+   },
+   {
+    "kind": "stack",
+    "gap": 14,
+    "pad": 56,
+    "children": [
+     {
+      "kind": "text",
+      "text": "SHOP BY MOOD",
+      "role": "label",
+      "align": "center",
+      "color": "#C2643C"
+     },
+     {
+      "kind": "text",
+      "text": "Find your ritual",
+      "role": "h2",
+      "align": "center",
+      "color": "#14110F"
+     },
+     {
+      "kind": "text",
+      "text": "Four collections, each built around a different part of the day.",
+      "role": "body",
+      "align": "center",
+      "color": "#8A8078",
+      "max_measure": 560
+     },
+     {
+      "kind": "spacer",
+      "height": 8
+     },
+     {
+      "kind": "grid",
+      "columns": 4,
+      "gap": 20,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "card",
+        "pad": 28,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Morning",
+          "role": "h3",
+          "align": "center",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Citrus · Coffee · Linen",
+          "role": "small",
+          "align": "center",
+          "color": "#8A8078"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 28,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Afternoon",
+          "role": "h3",
+          "align": "center",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Fig · Grass · Salt",
+          "role": "small",
+          "align": "center",
+          "color": "#8A8078"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 28,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Evening",
+          "role": "h3",
+          "align": "center",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Cedar · Smoke · Amber",
+          "role": "small",
+          "align": "center",
+          "color": "#8A8078"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 28,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Night",
+          "role": "h3",
+          "align": "center",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Vetiver · Musk · Resin",
+          "role": "small",
+          "align": "center",
+          "color": "#8A8078"
+         }
+        ],
+        "bg": "#FFFFFF"
+       }
+      ]
+     }
+    ],
+    "bg": "#FFFFFF"
+   },
+   {
+    "kind": "stack",
+    "gap": 16,
+    "pad": 56,
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 0,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 6,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "THE EDIT",
+          "role": "label",
+          "color": "#C2643C"
+         },
+         {
+          "kind": "text",
+          "text": "Best sellers",
+          "role": "h2",
+          "color": "#14110F"
+         }
+        ]
+       },
+       {
+        "kind": "stack",
+        "gap": 0,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "View all  →",
+          "role": "body",
+          "align": "end",
+          "color": "#14110F"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "kind": "spacer",
+      "height": 8
+     },
+     {
+      "kind": "grid",
+      "columns": 3,
+      "gap": 24,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "card",
+        "pad": 22,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "raw",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+          "height": 180
+         },
+         {
+          "kind": "text",
+          "text": "Ember Candle",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Sandalwood · Amber",
+          "role": "small",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "$48",
+          "role": "small",
+          "color": "#14110F"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 22,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "raw",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+          "height": 180
+         },
+         {
+          "kind": "text",
+          "text": "Stone Diffuser",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Cedar · Bergamot",
+          "role": "small",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "$62",
+          "role": "small",
+          "color": "#14110F"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 22,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "raw",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+          "height": 180
+         },
+         {
+          "kind": "text",
+          "text": "Night Vessel",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Vetiver · Musk",
+          "role": "small",
+          "color": "#8A8078"
+         },
+         {
+          "kind": "text",
+          "text": "$54",
+          "role": "small",
+          "color": "#14110F"
+         }
+        ],
+        "bg": "#FFFFFF"
+       }
+      ]
+     },
+     {
+      "kind": "spacer",
+      "height": 8
+     },
+     {
+      "kind": "stack",
+      "gap": 8,
+      "pad": 24,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 4,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Cannot decide?",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Take the 60-second scent finder and we'll narrow it down.",
+          "role": "small",
+          "color": "#8A8078"
+         }
+        ]
+       },
+       {
+        "kind": "stack",
+        "gap": 0,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "stack",
+          "gap": 0,
+          "pad": 0,
+          "children": [
+           {
+            "kind": "card",
+            "pad": 14,
+            "radius": 24,
+            "bg": "#14110F",
+            "children": [
+             {
+              "kind": "text",
+              "text": "Find my scent",
+              "role": "label",
+              "align": "center",
+              "color": "#FAF7F2"
+             }
+            ]
+           }
+          ]
+         }
+        ],
+        "align": "end"
+       }
+      ],
+      "align": "start",
+      "bg": "#EFE7DB"
+     }
+    ],
+    "bg": "#FAF7F2"
+   },
+   {
+    "kind": "grid",
+    "columns": 2,
+    "gap": 0,
+    "pad": 0,
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 12,
+      "pad": 56,
+      "children": [
+       {
+        "kind": "text",
+        "text": "OUR CRAFT",
+        "role": "label",
+        "color": "#E8A07A"
+       },
+       {
+        "kind": "text",
+        "text": "Made slowly, meant to last",
+        "role": "h1",
+        "color": "#FAF7F2"
+       },
+       {
+        "kind": "text",
+        "text": "Every KŌRA candle is poured in batches of 200 or fewer, then cured for fourteen days before it ships. No paraffin, no synthetic fragrance, no shortcuts.",
+        "role": "body",
+        "color": "#C9BFB2",
+        "max_measure": 460
+       },
+       {
+        "kind": "spacer",
+        "height": 8
+       },
+       {
+        "kind": "text",
+        "text": "Read our process  →",
+        "role": "label",
+        "color": "#FAF7F2"
+       }
+      ]
+     },
+     {
+      "kind": "stack",
+      "gap": 16,
+      "pad": 48,
+      "children": [
+       {
+        "kind": "raw",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"0 0 200 200\"><defs><linearGradient id=\"g1\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#C2643C\"/><stop offset=\"1\" stop-color=\"#7C8A6B\"/></linearGradient></defs><rect x=\"70\" y=\"40\" width=\"60\" height=\"120\" rx=\"14\" fill=\"url(#g1)\"/><rect x=\"86\" y=\"18\" width=\"28\" height=\"30\" rx=\"6\" fill=\"#14110F\"/><ellipse cx=\"100\" cy=\"168\" rx=\"52\" ry=\"10\" fill=\"#00000018\"/></svg>",
+        "height": 240
+       },
+       {
+        "kind": "card",
+        "pad": 24,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Cured 14 days in small batches",
+          "role": "h3",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "Poured by hand in Lisbon.",
+          "role": "small",
+          "color": "#8A8078"
+         }
+        ],
+        "bg": "#FFFFFF"
+       }
+      ],
+      "align": "start"
+     }
+    ],
+    "bg": "#14110F"
+   },
+   {
+    "kind": "stack",
+    "gap": 14,
+    "pad": 56,
+    "children": [
+     {
+      "kind": "text",
+      "text": "KIND WORDS",
+      "role": "label",
+      "align": "center",
+      "color": "#C2643C"
+     },
+     {
+      "kind": "text",
+      "text": "12,400 reviews, 4.9 average",
+      "role": "h2",
+      "align": "center",
+      "color": "#14110F"
+     },
+     {
+      "kind": "spacer",
+      "height": 8
+     },
+     {
+      "kind": "grid",
+      "columns": 3,
+      "gap": 24,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "card",
+        "pad": 24,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "The cedar one has been burning for six weeks and still throws.",
+          "role": "small",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "— Maya R.",
+          "role": "label",
+          "color": "#C2643C"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 24,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Bought one as a gift, ordered three more for myself.",
+          "role": "small",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "— Tomás L.",
+          "role": "label",
+          "color": "#C2643C"
+         }
+        ],
+        "bg": "#FFFFFF"
+       },
+       {
+        "kind": "card",
+        "pad": 24,
+        "radius": 16,
+        "children": [
+         {
+          "kind": "text",
+          "text": "The diffuser lasted almost five months. Worth every euro.",
+          "role": "small",
+          "color": "#14110F"
+         },
+         {
+          "kind": "text",
+          "text": "— Priya S.",
+          "role": "label",
+          "color": "#C2643C"
+         }
+        ],
+        "bg": "#FFFFFF"
+       }
+      ]
+     }
+    ],
+    "bg": "#FAF7F2"
+   },
+   {
+    "kind": "stack",
+    "gap": 14,
+    "pad": 56,
+    "children": [
+     {
+      "kind": "text",
+      "text": "JOIN THE LIST",
+      "role": "label",
+      "align": "center",
+      "color": "#E8A07A"
+     },
+     {
+      "kind": "text",
+      "text": "Get 15% off your first order",
+      "role": "h2",
+      "align": "center",
+      "color": "#FAF7F2"
+     },
+     {
+      "kind": "text",
+      "text": "Plus early access to small batches and seasonal scent drops.",
+      "role": "body",
+      "align": "center",
+      "color": "#C9BFB2",
+      "max_measure": 560
+     },
+     {
+      "kind": "spacer",
+      "height": 8
+     },
+     {
+      "kind": "grid",
+      "columns": 3,
+      "gap": 12,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "card",
+        "pad": 16,
+        "radius": 26,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Email address",
+          "role": "small",
+          "align": "start",
+          "color": "#8C8074"
+         }
+        ],
+        "bg": "#1C1814",
+        "border": "#4A3F35"
+       },
+       {
+        "kind": "stack",
+        "gap": 0,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "stack",
+          "gap": 0,
+          "pad": 0,
+          "children": [
+           {
+            "kind": "card",
+            "pad": 14,
+            "radius": 24,
+            "bg": "#14110F",
+            "children": [
+             {
+              "kind": "text",
+              "text": "Subscribe",
+              "role": "label",
+              "align": "center",
+              "color": "#FAF7F2"
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "kind": "spacer",
+        "height": 0
+       }
+      ]
+     }
+    ],
+    "bg": "#14110F"
+   },
+   {
+    "kind": "stack",
+    "gap": 24,
+    "pad": 56,
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 0,
+      "pad": 0,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 6,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "KŌRA",
+          "role": "h2",
+          "color": "#FAF7F2"
+         },
+         {
+          "kind": "text",
+          "text": "Home fragrance & stoneware, made slowly.",
+          "role": "small",
+          "color": "#8C8074"
+         }
+        ]
+       },
+       {
+        "kind": "grid",
+        "columns": 3,
+        "gap": 40,
+        "pad": 0,
+        "children": [
+         {
+          "kind": "text",
+          "text": "Shop",
+          "role": "label",
+          "align": "end",
+          "color": "#C2643C"
+         },
+         {
+          "kind": "text",
+          "text": "About",
+          "role": "label",
+          "align": "end",
+          "color": "#C2643C"
+         },
+         {
+          "kind": "text",
+          "text": "Follow",
+          "role": "label",
+          "align": "end",
+          "color": "#C2643C"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "kind": "rule"
+     },
+     {
+      "kind": "text",
+      "text": "© 2026 KŌRA Home. All rights reserved.",
+      "role": "small",
+      "color": "#7A6F64"
+     }
+    ],
+    "bg": "#0F0C0A"
+   }
+  ]
+ }
+}

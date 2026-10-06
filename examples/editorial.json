@@ -1,0 +1,61 @@
+{
+  "canvas": { "width": 1440, "background": "#FAF7F2" },
+  "theme": "editorial",
+  "root": {
+    "kind": "stack",
+    "gap": 40,
+    "pad": 96,
+    "children": [
+      { "kind": "text", "text": "AUTUMN / WINTER 2026", "role": "label" },
+      { "kind": "text", "text": "Objects made slowly, for rooms that last.", "role": "display", "max_measure": 1180 },
+      { "kind": "text", "text": "We work in oak, brass and linen — three materials that behave predictably for thirty years. Every piece is cut, joined and finished in one workshop.", "role": "body", "max_measure": 620 },
+      { "kind": "rule" },
+      { "kind": "text", "text": "The collection", "role": "h2" },
+      {
+        "kind": "grid",
+        "columns": 3,
+        "gap": 32,
+        "children": [
+          {
+            "kind": "card",
+            "children": [
+              { "kind": "text", "text": "01", "role": "label" },
+              { "kind": "text", "text": "The Ash Bench", "role": "h3" },
+              { "kind": "text", "text": "Solid ash, hand-planed to a 42mm section. Seats three without a central leg.", "role": "small", "max_measure": 340 },
+              { "kind": "text", "text": "£1,240", "role": "body" }
+            ]
+          },
+          {
+            "kind": "card",
+            "children": [
+              { "kind": "text", "text": "02", "role": "label" },
+              { "kind": "text", "text": "The Kiln Lamp", "role": "h3" },
+              { "kind": "text", "text": "Spun brass base with a hand-pressed linen shade, dimmable to five levels.", "role": "small", "max_measure": 340 },
+              { "kind": "text", "text": "£420", "role": "body" }
+            ]
+          },
+          {
+            "kind": "card",
+            "children": [
+              { "kind": "text", "text": "03", "role": "label" },
+              { "kind": "text", "text": "The Long Table", "role": "h3" },
+              { "kind": "text", "text": "A single-board top, sixty centimetres deep, on tapered legs set to the width.", "role": "small", "max_measure": 340 },
+              { "kind": "text", "text": "£2,180", "role": "body" }
+            ]
+          }
+        ]
+      },
+      { "kind": "rule" },
+      {
+        "kind": "stack",
+        "gap": 24,
+        "align": "center",
+        "children": [
+          { "kind": "text", "text": "Complimentary delivery across the United Kingdom.", "role": "h3", "align": "center", "max_measure": 760 },
+          { "kind": "text", "text": "Order by 14 December for arrival before the holidays.", "role": "body", "align": "center" }
+        ]
+      },
+      { "kind": "text", "text": "KORA STUDIO — LONDON", "role": "label", "align": "center" }
+    ]
+  }
+}
