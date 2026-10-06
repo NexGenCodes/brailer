@@ -56,6 +56,11 @@ const CANDIDATES: &[(&str, u16, &[&str])] = &[
 ];
 
 impl FontBook {
+    // Candidates must be the outer loop: names are in preference order, so the
+    // first candidate that exists on disk wins. Nesting it the other way round
+    // (paths outer) silently let filesystem order override preference, which is
+    // how a system could register DejaVu while the SVG asks for Noto Sans —
+    // and text then rasterises to nothing.
     pub fn discover(roots: &[PathBuf]) -> FontBook {
         let mut book = FontBook::default();
         let mut found: Vec<PathBuf> = Vec::new();
@@ -157,7 +162,12 @@ impl FontBook {
         size: f32,
         measure: f32,
         text: &str,
+        tracking_px: f32,
     ) -> Vec<String> {
+        let advance = |t: &str| {
+            let spaced = t.chars().count().saturating_sub(1) as f32 * tracking_px;
+            self.advance(family, weight, size, t) + spaced
+        };
         let mut lines = Vec::new();
         for para in text.split('\n') {
             let words: Vec<&str> = para.split_whitespace().collect();
@@ -172,7 +182,7 @@ impl FontBook {
                 } else {
                     format!("{line} {word}")
                 };
-                if self.advance(family, weight, size, &candidate) <= measure || line.is_empty() {
+                if advance(&candidate) <= measure || line.is_empty() {
                     line = candidate;
                 } else {
                     lines.push(std::mem::take(&mut line));

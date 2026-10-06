@@ -8,7 +8,11 @@ use brailer::{load, render};
 fn example() -> (brailer::Pipeline, brailer::Scene) {
     let doc = load(Path::new("examples/editorial.json")).expect("load spec");
     let pipe = brailer::Pipeline::new(&doc.theme).expect("theme");
-    let scene = pipe.scene(&doc);
+    let frame = doc
+        .frames_effective()
+        .remove("design")
+        .expect("legacy spec maps to a design frame");
+    let scene = pipe.scene(&frame);
     (pipe, scene)
 }
 

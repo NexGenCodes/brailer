@@ -28,6 +28,8 @@ enum Cmd {
         json: bool,
         #[arg(long)]
         strict: bool,
+        #[arg(long)]
+        frame: Option<String>,
     },
     Render {
         spec: PathBuf,
@@ -39,6 +41,8 @@ enum Cmd {
         retina: bool,
         #[arg(long)]
         strict: bool,
+        #[arg(long)]
+        frame: Option<String>,
     },
     Themes,
     Fonts,
@@ -100,46 +104,101 @@ fn run() -> Result<i32> {
             Ok(0)
         }
         Cmd::Build { spec, out } => {
-            let out = out.unwrap_or_else(|| spec.with_extension("svg"));
             let doc = brailer::load(&spec)?;
             let pipe = brailer::Pipeline::new(&doc.theme)?;
-            let t = Instant::now();
-            let scene = pipe.scene(&doc);
-            let ms = t.elapsed().as_secs_f64() * 1000.0;
-            pipe.write_svg(&out, &scene)?;
-            eprintln!(
-                "svg {ms:.0}ms -> {} ({}x{}, {} prims)",
-                out.display(),
-                scene.width as i64,
-                scene.height as i64,
-                scene.prims.len()
-            );
-            Ok(0)
-        }
-        Cmd::Verify { spec, json, strict } => {
-            let doc = brailer::load(&spec)?;
-            let pipe = brailer::Pipeline::new(&doc.theme)?;
-            let scene = pipe.scene(&doc);
-            let rep = pipe.verify(&scene);
-            if json {
-                let mut obj = serde_json::Map::new();
-                obj.insert("ok".into(), rep.passed(strict).into());
-                obj.insert("geometry_ok".into(), rep.ok().into());
-                obj.insert("prims".into(), rep.prims.into());
-                obj.insert("width".into(), json_f32(scene.width));
-                obj.insert("height".into(), json_f32(scene.height));
-                obj.insert("errors".into(), arr(&rep.errors));
-                obj.insert("out_of_bounds".into(), arr(&rep.out_of_bounds));
-                obj.insert("collisions".into(), arr(&rep.collisions));
-                obj.insert("contrast".into(), arr(&rep.contrast));
-                println!("{}", serde_json::Value::Object(obj));
+            let frames = pick_frames(&doc, None)?;
+            if frames.len() == 1 {
+                let out = out.unwrap_or_else(|| spec.with_extension("svg"));
+                let (_, frame) = &frames[0];
+                let t = Instant::now();
+                let scene = pipe.scene(frame);
+                let ms = t.elapsed().as_secs_f64() * 1000.0;
+                pipe.write_svg(&out, &scene)?;
+                eprintln!(
+                    "svg {ms:.0}ms -> {} ({}x{}, {} prims)",
+                    out.display(),
+                    scene.width as i64,
+                    scene.height as i64,
+                    scene.prims.len()
+                );
             } else {
-                println!("{}", rep.summary(strict));
-                for d in rep.details() {
-                    println!("  {d}");
+                let out = out.unwrap_or_else(|| {
+                    spec.parent()
+                        .unwrap_or(Path::new("."))
+                        .join("out")
+                        .join(spec.file_stem().unwrap_or_default())
+                });
+                std::fs::create_dir_all(&out)?;
+                for (name, frame) in &frames {
+                    let scene = pipe.scene(frame);
+                    let p = out.join(format!("{name}.svg"));
+                    pipe.write_svg(&p, &scene)?;
+                    eprintln!(
+                        "[{name}] svg -> {} ({}x{}, {} prims)",
+                        p.display(),
+                        scene.width as i64,
+                        scene.height as i64,
+                        scene.prims.len()
+                    );
                 }
             }
-            Ok(if rep.passed(strict) { 0 } else { 1 })
+            Ok(0)
+        }
+        Cmd::Verify {
+            spec,
+            json,
+            strict,
+            frame,
+        } => {
+            let doc = brailer::load(&spec)?;
+            let pipe = brailer::Pipeline::new(&doc.theme)?;
+            let frames = pick_frames(&doc, frame.as_deref())?;
+            let mut any_fail = false;
+            if json {
+                let mut list = Vec::new();
+                for (name, fr) in &frames {
+                    let scene = pipe.scene(fr);
+                    let rep = pipe.verify(&scene);
+                    let mut obj = serde_json::Map::new();
+                    obj.insert("frame".into(), name.clone().into());
+                    obj.insert("ok".into(), rep.passed(strict).into());
+                    obj.insert("geometry_ok".into(), rep.ok().into());
+                    obj.insert("prims".into(), rep.prims.into());
+                    obj.insert("width".into(), json_f32(scene.width));
+                    obj.insert("height".into(), json_f32(scene.height));
+                    obj.insert("errors".into(), arr(&rep.errors));
+                    obj.insert("out_of_bounds".into(), arr(&rep.out_of_bounds));
+                    obj.insert("collisions".into(), arr(&rep.collisions));
+                    obj.insert("contrast".into(), arr(&rep.contrast));
+                    if !rep.passed(strict) {
+                        any_fail = true;
+                    }
+                    list.push(serde_json::Value::Object(obj));
+                }
+                if frames.len() == 1 {
+                    println!("{}", list[0]);
+                } else {
+                    println!("{}", serde_json::Value::Array(list));
+                }
+            } else {
+                for (name, fr) in &frames {
+                    let scene = pipe.scene(fr);
+                    let rep = pipe.verify(&scene);
+                    let tag = if frames.len() > 1 {
+                        format!("[{name}] ")
+                    } else {
+                        String::new()
+                    };
+                    println!("{tag}{}", rep.summary(strict));
+                    for d in rep.details() {
+                        println!("{tag}  {d}");
+                    }
+                    if !rep.passed(strict) {
+                        any_fail = true;
+                    }
+                }
+            }
+            Ok(if any_fail { 1 } else { 0 })
         }
         Cmd::Render {
             spec,
@@ -147,6 +206,7 @@ fn run() -> Result<i32> {
             scale,
             retina,
             strict,
+            frame,
         } => {
             let out_dir = out.unwrap_or_else(|| {
                 spec.parent()
@@ -156,51 +216,88 @@ fn run() -> Result<i32> {
             });
             let doc = brailer::load(&spec)?;
             let pipe = brailer::Pipeline::new(&doc.theme)?;
-
-            let t = Instant::now();
-            let scene = pipe.scene(&doc);
-            let layout_ms = t.elapsed().as_secs_f64() * 1000.0;
-
-            let rep = pipe.verify(&scene);
-            if !rep.passed(strict) {
-                for d in rep.details() {
-                    eprintln!("verify: {d}");
-                }
-                bail!("refusing to render: verification failed");
-            }
+            let frames = pick_frames(&doc, frame.as_deref())?;
 
             let mut scales = vec![scale];
             if retina && !scales.contains(&2.0) {
                 scales.push(2.0);
             }
-            for s in &scales {
-                brailer::render::check_output(scene.width, scene.height, *s)?;
+
+            let mut jobs: Vec<(String, brailer::Scene)> = Vec::new();
+            for (name, fr) in &frames {
+                let t = Instant::now();
+                let scene = pipe.scene(fr);
+                let layout_ms = t.elapsed().as_secs_f64() * 1000.0;
+
+                let rep = pipe.verify(&scene);
+                if !rep.passed(strict) {
+                    for d in rep.details() {
+                        eprintln!("verify [{name}]: {d}");
+                    }
+                    bail!("refusing to render: verification failed");
+                }
+
+                // Contract: verify must never pass if a later render step would
+                // then fail. So the gate runs before any file is created, and
+                // every requested scale is pre-flighted here — otherwise
+                // --retina could error out after design.svg was already written.
+                for s in &scales {
+                    brailer::render::check_output(scene.width, scene.height, *s)?;
+                }
+                let _ = layout_ms;
+                jobs.push((name.clone(), scene));
             }
 
-            std::fs::create_dir_all(&out_dir).ok();
-            let svg_path = out_dir.join("design.svg");
-            pipe.write_svg(&svg_path, &scene)?;
-            let svg_ms = t.elapsed().as_secs_f64() * 1000.0 - layout_ms;
-
-            for s in scales {
-                let p = if s.fract() == 0.0 {
-                    out_dir.join(format!("design@{}x.png", s as i64))
+            std::fs::create_dir_all(&out_dir)?;
+            for (name, scene) in &jobs {
+                let stem = if name == "design" { "design" } else { name };
+                let svg_path = out_dir.join(format!("{stem}.svg"));
+                pipe.write_svg(&svg_path, scene)?;
+                for s in &scales {
+                    let p = if s.fract() == 0.0 {
+                        out_dir.join(format!("{stem}@{}x.png", *s as i64))
+                    } else {
+                        out_dir.join(format!("{stem}@{}x.png", s))
+                    };
+                    pipe.write_png(&p, scene, *s)?;
+                }
+                let label = if name == "design" {
+                    String::new()
                 } else {
-                    out_dir.join(format!("design@{}x.png", s))
+                    format!("[{name}] ")
                 };
-                pipe.write_png(&p, &scene, s)?;
+                eprintln!(
+                    "{label}{}x{} · {} prims · verify PASS -> {}",
+                    scene.width as i64,
+                    scene.height as i64,
+                    scene.prims.len(),
+                    out_dir.display()
+                );
             }
-            let total = t.elapsed().as_secs_f64() * 1000.0;
-            eprintln!(
-                "layout {layout_ms:.0}ms · svg {svg_ms:.0}ms · total {total:.0}ms · {}x{} · {} prims · verify PASS",
-                scene.width as i64,
-                scene.height as i64,
-                scene.prims.len()
-            );
-            eprintln!("-> {}", out_dir.display());
             Ok(0)
         }
     }
+}
+
+fn pick_frames(
+    doc: &brailer::Document,
+    want: Option<&str>,
+) -> Result<Vec<(String, brailer::Frame)>> {
+    let mut all: Vec<(String, brailer::Frame)> = doc.frames_effective().into_iter().collect();
+    if let Some(want) = want {
+        all.retain(|(k, _)| k == want);
+        if all.is_empty() {
+            bail!(
+                "no frame named {want:?}; available: {}",
+                doc.frames_effective()
+                    .keys()
+                    .cloned()
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            );
+        }
+    }
+    Ok(all)
 }
 
 fn json_f32(v: f32) -> serde_json::Value {

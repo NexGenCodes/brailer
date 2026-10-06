@@ -1,4 +1,4 @@
-use crate::spec::Align;
+use crate::spec::{Align, Fit, Shadow};
 
 #[derive(Debug, Clone)]
 pub struct Scene {
@@ -19,6 +19,8 @@ pub enum Prim {
         radius: f32,
         stroke: Option<String>,
         stroke_width: f32,
+        gradient: Option<(String, String, f32)>,
+        shadow: Option<Shadow>,
     },
     Text {
         x: f32,
@@ -31,6 +33,7 @@ pub enum Prim {
         weight: u16,
         fill: String,
         align: Align,
+        tracking: f32,
     },
     Rule {
         x: f32,
@@ -38,6 +41,14 @@ pub enum Prim {
         w: f32,
         thickness: f32,
         stroke: String,
+    },
+    Image {
+        x: f32,
+        y: f32,
+        w: f32,
+        h: f32,
+        href: String,
+        fit: Fit,
     },
     Raw {
         x: f32,
@@ -56,6 +67,7 @@ impl Prim {
             Prim::Text {
                 x, y, w, h, size, ..
             } => (*x, *y - *size * 0.82, *w, *h),
+            Prim::Image { x, y, w, h, .. } => (*x, *y, *w, *h),
             Prim::Raw { x, y, .. } => (*x, *y, 0.0, 0.0),
         }
     }
@@ -65,6 +77,7 @@ impl Prim {
             Prim::Rect { .. } => "rect",
             Prim::Text { .. } => "text",
             Prim::Rule { .. } => "rule",
+            Prim::Image { .. } => "image",
             Prim::Raw { .. } => "raw",
         }
     }

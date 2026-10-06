@@ -1,0 +1,978 @@
+{
+ "theme": "canary",
+ "components": {},
+ "frames": {
+  "desktop": {
+   "canvas": {
+    "width": 1440,
+    "background": "#FBF9F3"
+   },
+   "root": {
+    "kind": "stack",
+    "gap": 32,
+    "align": "start",
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 16,
+      "align": "start",
+      "children": [
+       {
+        "kind": "text",
+        "text": "CEDAR & LEAD",
+        "role": "h3",
+        "tracking": 0.05
+       },
+       {
+        "kind": "text",
+        "text": "CHECKOUT",
+        "role": "label",
+        "color": "#B3261E",
+        "tracking": 0.044
+       }
+      ],
+      "pad": 40
+     },
+     {
+      "kind": "grid",
+      "columns": 8,
+      "gap": 24,
+      "align": "start",
+      "children": [
+       {
+        "kind": "cell",
+        "span": 5,
+        "child": {
+         "kind": "card",
+         "radius": 16,
+         "gap": 0,
+         "children": [
+          {
+           "kind": "stack",
+           "gap": 6,
+           "align": "start",
+           "children": [
+            {
+             "kind": "text",
+             "text": "DELIVERY",
+             "role": "label",
+             "color": "#655F55",
+             "tracking": 0.044
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "text",
+             "text": "GRAPHITE CLUB MEMBER",
+             "role": "label",
+             "color": "#B3261E",
+             "tracking": 0.042
+            },
+            {
+             "kind": "text",
+             "text": "Ada Lovelace",
+             "role": "h3"
+            },
+            {
+             "kind": "text",
+             "text": "Ada Lovelace, Studio Nine, Denmark Hill,",
+             "role": "body",
+             "color": "#3A3941"
+            },
+            {
+             "kind": "text",
+             "text": "London SE5 8RX",
+             "role": "body",
+             "color": "#3A3941"
+            },
+            {
+             "kind": "text",
+             "text": "+44 20 7193 4200",
+             "role": "body",
+             "color": "#3A3941"
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "text",
+             "text": "CARD",
+             "role": "label",
+             "color": "#655F55",
+             "tracking": 0.044
+            },
+            {
+             "kind": "text",
+             "text": "4242 4242 4242 4242",
+             "role": "body"
+            },
+            {
+             "kind": "grid",
+             "columns": 2,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "0824",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "CVC 242",
+               "role": "body"
+              }
+             ]
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 8
+            },
+            {
+             "kind": "card",
+             "radius": 999,
+             "gap": 0,
+             "children": [
+              {
+               "kind": "text",
+               "text": "Complete order — $79.00",
+               "role": "small",
+               "color": "#FBF9F3",
+               "tracking": 0.06
+              }
+             ],
+             "pad": 15,
+             "bg": "#17161A"
+            },
+            {
+             "kind": "text",
+             "text": "Taxes incl. · 30-day sharpening guarantee",
+             "role": "small",
+             "color": "#655F55",
+             "max_measure": 420,
+             "align": "center"
+            }
+           ],
+           "pad": 24,
+           "bg": "#FFFFFF"
+          }
+         ],
+         "pad": 0,
+         "shadow": {
+          "blur": 18,
+          "x": 0,
+          "y": 3,
+          "color": "#17161A1F"
+         }
+        }
+       },
+       {
+        "kind": "cell",
+        "span": 3,
+        "child": {
+         "kind": "card",
+         "radius": 16,
+         "gap": 0,
+         "children": [
+          {
+           "kind": "stack",
+           "gap": 6,
+           "align": "start",
+           "children": [
+            {
+             "kind": "text",
+             "text": "ORDER",
+             "role": "label",
+             "color": "#655F55",
+             "tracking": 0.044
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Graphite No. 2",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "1",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$14.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Paris Statement",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "2",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$44.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Studio Eraser",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "1",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$6.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Kiln-Resin HB",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "1",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$9.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Sharpener (free)",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "—",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$0.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "rule",
+             "stroke": "#CFC7B4",
+             "thickness": 1
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "grid",
+             "columns": 2,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Subtotal",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "$73.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "grid",
+             "columns": 3,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Dispatch",
+               "role": "body"
+              },
+              {
+               "kind": "text",
+               "text": "2–4 days",
+               "role": "small",
+               "color": "#655F55"
+              },
+              {
+               "kind": "text",
+               "text": "$6.00",
+               "role": "body",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "grid",
+             "columns": 2,
+             "gap": 8,
+             "align": "start",
+             "children": [
+              {
+               "kind": "text",
+               "text": "Total",
+               "role": "h3"
+              },
+              {
+               "kind": "text",
+               "text": "$79.00",
+               "role": "h3",
+               "align": "end"
+              }
+             ]
+            },
+            {
+             "kind": "spacer",
+             "height": 4
+            },
+            {
+             "kind": "card",
+             "radius": 999,
+             "gap": 0,
+             "children": [
+              {
+               "kind": "text",
+               "text": "Pay with card",
+               "role": "small",
+               "color": "#FBF9F3",
+               "tracking": 0.06
+              }
+             ],
+             "pad": 15,
+             "bg": "#B3261E"
+            },
+            {
+             "kind": "text",
+             "text": "Apple Pay · PayPal · bank",
+             "role": "small",
+             "color": "#655F55",
+             "max_measure": 380,
+             "align": "center"
+            }
+           ],
+           "pad": 24,
+           "bg": "#FFFFFF"
+          }
+         ],
+         "pad": 0,
+         "shadow": {
+          "blur": 18,
+          "x": 0,
+          "y": 3,
+          "color": "#17161A1F"
+         }
+        }
+       }
+      ]
+     },
+     {
+      "kind": "spacer",
+      "height": 56
+     },
+     {
+      "kind": "stack",
+      "gap": 16,
+      "align": "start",
+      "children": [
+       {
+        "kind": "rule",
+        "stroke": "#CFC7B4",
+        "thickness": 1
+       },
+       {
+        "kind": "grid",
+        "columns": 2,
+        "gap": 16,
+        "align": "start",
+        "children": [
+         {
+          "kind": "text",
+          "text": "Est. 2019 · N1S2",
+          "role": "small",
+          "color": "#655F55"
+         },
+         {
+          "kind": "text",
+          "text": "Return within 30 days",
+          "role": "small",
+          "color": "#655F55"
+         }
+        ]
+       }
+      ],
+      "pad": 40
+     }
+    ],
+    "pad": 0,
+    "bg": "#FBF9F3"
+   }
+  },
+  "mobile": {
+   "canvas": {
+    "width": 390,
+    "background": "#FBF9F3"
+   },
+   "root": {
+    "kind": "stack",
+    "gap": 16,
+    "align": "start",
+    "children": [
+     {
+      "kind": "stack",
+      "gap": 10,
+      "align": "start",
+      "children": [
+       {
+        "kind": "text",
+        "text": "CEDAR & LEAD",
+        "role": "h3",
+        "tracking": 0.05
+       },
+       {
+        "kind": "text",
+        "text": "CHECKOUT",
+        "role": "label",
+        "color": "#B3261E",
+        "tracking": 0.044
+       }
+      ],
+      "pad": 20
+     },
+     {
+      "kind": "card",
+      "radius": 16,
+      "gap": 0,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 6,
+        "align": "start",
+        "children": [
+         {
+          "kind": "text",
+          "text": "DELIVERY",
+          "role": "label",
+          "color": "#655F55",
+          "tracking": 0.044
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "text",
+          "text": "GRAPHITE CLUB MEMBER",
+          "role": "label",
+          "color": "#B3261E",
+          "tracking": 0.042
+         },
+         {
+          "kind": "text",
+          "text": "Ada Lovelace",
+          "role": "h3"
+         },
+         {
+          "kind": "text",
+          "text": "Ada Lovelace, Studio Nine, Denmark Hill,",
+          "role": "body",
+          "color": "#3A3941"
+         },
+         {
+          "kind": "text",
+          "text": "London SE5 8RX",
+          "role": "body",
+          "color": "#3A3941"
+         },
+         {
+          "kind": "text",
+          "text": "+44 20 7193 4200",
+          "role": "body",
+          "color": "#3A3941"
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "text",
+          "text": "CARD",
+          "role": "label",
+          "color": "#655F55",
+          "tracking": 0.044
+         },
+         {
+          "kind": "text",
+          "text": "4242 4242 4242 4242",
+          "role": "body"
+         },
+         {
+          "kind": "grid",
+          "columns": 2,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "0824",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "CVC 242",
+            "role": "body"
+           }
+          ]
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 8
+         },
+         {
+          "kind": "card",
+          "radius": 999,
+          "gap": 0,
+          "children": [
+           {
+            "kind": "text",
+            "text": "Complete order — $79.00",
+            "role": "small",
+            "color": "#FBF9F3",
+            "tracking": 0.06
+           }
+          ],
+          "pad": 15,
+          "bg": "#17161A"
+         },
+         {
+          "kind": "text",
+          "text": "Taxes incl. · 30-day sharpening guarantee",
+          "role": "small",
+          "color": "#655F55",
+          "max_measure": 420,
+          "align": "center"
+         }
+        ],
+        "pad": 24,
+        "bg": "#FFFFFF"
+       }
+      ],
+      "pad": 0,
+      "shadow": {
+       "blur": 18,
+       "x": 0,
+       "y": 3,
+       "color": "#17161A1F"
+      }
+     },
+     {
+      "kind": "card",
+      "radius": 16,
+      "gap": 0,
+      "children": [
+       {
+        "kind": "stack",
+        "gap": 6,
+        "align": "start",
+        "children": [
+         {
+          "kind": "text",
+          "text": "ORDER",
+          "role": "label",
+          "color": "#655F55",
+          "tracking": 0.044
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Graphite No. 2",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "1",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$14.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Paris Statement",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "2",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$44.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Studio Eraser",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "1",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$6.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Kiln-Resin HB",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "1",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$9.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Sharpener (free)",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "—",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$0.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "rule",
+          "stroke": "#CFC7B4",
+          "thickness": 1
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "grid",
+          "columns": 2,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Subtotal",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "$73.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "grid",
+          "columns": 3,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Dispatch",
+            "role": "body"
+           },
+           {
+            "kind": "text",
+            "text": "2–4 days",
+            "role": "small",
+            "color": "#655F55"
+           },
+           {
+            "kind": "text",
+            "text": "$6.00",
+            "role": "body",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "grid",
+          "columns": 2,
+          "gap": 8,
+          "align": "start",
+          "children": [
+           {
+            "kind": "text",
+            "text": "Total",
+            "role": "h3"
+           },
+           {
+            "kind": "text",
+            "text": "$79.00",
+            "role": "h3",
+            "align": "end"
+           }
+          ]
+         },
+         {
+          "kind": "spacer",
+          "height": 4
+         },
+         {
+          "kind": "card",
+          "radius": 999,
+          "gap": 0,
+          "children": [
+           {
+            "kind": "text",
+            "text": "Pay with card",
+            "role": "small",
+            "color": "#FBF9F3",
+            "tracking": 0.06
+           }
+          ],
+          "pad": 15,
+          "bg": "#B3261E"
+         },
+         {
+          "kind": "text",
+          "text": "Apple Pay · PayPal · bank",
+          "role": "small",
+          "color": "#655F55",
+          "max_measure": 380,
+          "align": "center"
+         }
+        ],
+        "pad": 24,
+        "bg": "#FFFFFF"
+       }
+      ],
+      "pad": 0,
+      "shadow": {
+       "blur": 18,
+       "x": 0,
+       "y": 3,
+       "color": "#17161A1F"
+      }
+     },
+     {
+      "kind": "spacer",
+      "height": 24
+     },
+     {
+      "kind": "rule",
+      "stroke": "#CFC7B4",
+      "thickness": 1
+     },
+     {
+      "kind": "text",
+      "text": "Return within 30 days",
+      "role": "small",
+      "color": "#655F55"
+     },
+     {
+      "kind": "spacer",
+      "height": 32
+     }
+    ],
+    "pad": 0,
+    "bg": "#FBF9F3"
+   }
+  }
+ }
+}

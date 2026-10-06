@@ -1,6 +1,6 @@
 use crate::fonts::FontBook;
 use crate::primitive::{Prim, Scene};
-use crate::spec::{Align, Node};
+use crate::spec::{Align, Fill, Frame, Node, Shadow};
 use crate::theme::{TextRole, Theme};
 
 pub struct Ctx<'a> {
@@ -26,6 +26,7 @@ fn measure_text(
     role: TextRole,
     max_measure: Option<f32>,
     avail: f32,
+    tracking: f32,
     ctx: &Ctx,
 ) -> (Vec<String>, f32, f32) {
     let size = ctx.theme.size(role);
@@ -33,14 +34,28 @@ fn measure_text(
     let weight = weight_for(role);
     let cap = max_measure.unwrap_or(ctx.theme.type_scale.measure);
     let measure = cap.min(avail).max(size * 4.0);
-    let lines = ctx.fonts.wrap(family, weight, size, measure, node_text);
+    let tracking_px = tracking * size;
+    let lines = ctx
+        .fonts
+        .wrap(family, weight, size, measure, node_text, tracking_px);
     let leading = ctx.theme.leading(role);
     let h = lines.len() as f32 * leading;
     let widest = lines
         .iter()
-        .map(|l| ctx.fonts.advance(family, weight, size, l))
+        .map(|l| {
+            let base = ctx.fonts.advance(family, weight, size, l);
+            let gaps = l.chars().count().saturating_sub(1) as f32 * tracking_px;
+            base + gaps
+        })
         .fold(0.0f32, f32::max);
     (lines, widest, h)
+}
+
+fn span_of(node: &Node) -> (u8, &Node) {
+    match node {
+        Node::Cell { span, child } => (*span, child.as_ref()),
+        other => (1, other),
+    }
 }
 
 pub fn measure(node: &Node, avail: f32, ctx: &Ctx) -> Extent {
@@ -74,27 +89,27 @@ pub fn measure(node: &Node, avail: f32, ctx: &Ctx) -> Extent {
             let pad = pad.unwrap_or(0.0);
             let gap = gap.unwrap_or(ctx.theme.space.base);
             let inner = ((avail - pad * 2.0 - gap * (cols as f32 - 1.0)).max(1.0)) / cols as f32;
-            let mut h = 0.0f32;
-            for row in children.chunks(cols) {
-                let rh = row
-                    .iter()
-                    .map(|c| measure(c, inner, ctx).h)
-                    .fold(0.0f32, f32::max);
-                h += rh;
-            }
-            let rows = children.len().div_ceil(cols).max(1) as f32;
+            let (_, content_h) = grid_metrics(children, cols, inner, gap, ctx);
             Extent {
                 w: avail,
-                h: h + gap * (rows - 1.0) + pad * 2.0,
+                h: content_h + pad * 2.0,
             }
         }
         Node::Text {
             text,
             role,
             max_measure,
+            tracking,
             ..
         } => {
-            let (_, _, h) = measure_text(text, *role, *max_measure, avail, ctx);
+            let (_, _, h) = measure_text(
+                text,
+                *role,
+                *max_measure,
+                avail,
+                tracking.unwrap_or(0.0),
+                ctx,
+            );
             Extent { w: avail, h }
         }
         Node::Rule { thickness, .. } => Extent {
@@ -120,32 +135,112 @@ pub fn measure(node: &Node, avail: f32, ctx: &Ctx) -> Extent {
                 h: h + pad * 2.0,
             }
         }
+        Node::Image { width, height, .. } => Extent {
+            w: width.unwrap_or(avail),
+            h: *height,
+        },
         Node::Raw { height, .. } => Extent {
             w: avail,
             h: height.unwrap_or(0.0),
         },
+        Node::Cell { child, .. } => measure(child, avail, ctx),
+        Node::Component { .. } => Extent { w: avail, h: 0.0 },
     }
 }
 
-pub fn build(doc: &crate::spec::Document, ctx: &Ctx) -> Scene {
-    let total = measure(&doc.root, doc.canvas.width, ctx);
+/// Lays out a grid's children with column spans. Returns one rect per child
+/// (aligned to the child index; x/y relative to the grid's content box) and the
+/// content height. Rows bind: a cell that does not fit in the remaining
+/// columns wraps to the next row, then later cells fill the leftover slots —
+/// the float-grid pack that makes asymmetric marketplaces possible.
+fn grid_metrics(
+    children: &[Node],
+    cols: usize,
+    col_w: f32,
+    gap: f32,
+    ctx: &Ctx,
+) -> (Vec<(f32, f32, f32, f32)>, f32) {
+    let mut rows: Vec<Vec<usize>> = Vec::new();
+    let mut cur: Vec<usize> = Vec::new();
+    let mut used = 0usize;
+    for (i, child) in children.iter().enumerate() {
+        let (span, _) = span_of(child);
+        let span = (span as usize).min(cols);
+        if used + span > cols {
+            rows.push(std::mem::take(&mut cur));
+            used = 0;
+        }
+        cur.push(i);
+        used += span;
+    }
+    if !cur.is_empty() {
+        rows.push(cur);
+    }
+
+    let mut rects = vec![(0.0f32, 0.0f32, 0.0f32, 0.0f32); children.len()];
+    let mut y = 0.0f32;
+    let mut content_h = 0.0f32;
+    for row in &rows {
+        let mut rh = 0.0f32;
+        let mut col = 0usize;
+        for &i in row {
+            let (span, child_node) = span_of(&children[i]);
+            let span = span as usize;
+            let w = span as f32 * col_w + (span as f32 - 1.0) * gap;
+            let h = measure(child_node, w, ctx).h;
+            rects[i] = (col as f32 * (col_w + gap), y, w, h);
+            rh = rh.max(h);
+            col += span;
+        }
+        content_h = y + rh;
+        y += rh + gap;
+    }
+    (rects, content_h)
+}
+
+/// Resolve a container fill into (solid fallback, optional gradient).
+fn paint(fill: &Option<Fill>, default: &str) -> (String, Option<(String, String, f32)>) {
+    match fill {
+        None => (default.to_string(), None),
+        Some(Fill::Solid(c)) => (c.clone(), None),
+        Some(Fill::Linear(g)) => (
+            g.from.clone(),
+            Some((g.from.clone(), g.to.clone(), g.angle)),
+        ),
+    }
+}
+
+pub fn build(frame: &Frame, ctx: &Ctx) -> Scene {
+    let total = measure(&frame.root, frame.canvas.width, ctx);
     let mut scene = Scene {
-        width: doc.canvas.width,
+        width: frame.canvas.width,
         height: total.h.ceil(),
-        background: doc.canvas.background.clone(),
+        background: frame.canvas.background.clone(),
         prims: Vec::new(),
     };
-    scene.prims.push(Prim::Rect {
-        x: 0.0,
-        y: 0.0,
-        w: doc.canvas.width,
-        h: scene.height,
-        fill: doc.canvas.background.clone(),
-        radius: 0.0,
-        stroke: None,
-        stroke_width: 0.0,
-    });
-    place(&doc.root, 0.0, 0.0, doc.canvas.width, ctx, &mut scene.prims);
+    push_rect(
+        &mut scene.prims,
+        0.0,
+        0.0,
+        frame.canvas.width,
+        scene.height,
+        RectStyle {
+            bg: &Some(Fill::Solid(frame.canvas.background.clone())),
+            shadow: &None,
+            radius: 0.0,
+            stroke: None,
+            stroke_width: 0.0,
+        },
+        ctx.theme,
+    );
+    place(
+        &frame.root,
+        0.0,
+        0.0,
+        frame.canvas.width,
+        ctx,
+        &mut scene.prims,
+    );
     scene
 }
 
@@ -157,24 +252,30 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             align,
             pad,
             bg,
+            shadow,
             children,
         } => {
             let pad = pad.unwrap_or(0.0);
             let gap = gap.unwrap_or(theme.space.base);
             let align = align.unwrap_or(Align::Start);
             let inner_w = (avail - pad * 2.0).max(1.0);
-            if let Some(fill) = bg {
+            if bg.is_some() {
                 let h = measure(node, avail, ctx).h;
-                out.push(Prim::Rect {
+                push_rect(
+                    out,
                     x,
                     y,
-                    w: avail,
+                    avail,
                     h,
-                    fill: fill.clone(),
-                    radius: 0.0,
-                    stroke: None,
-                    stroke_width: 0.0,
-                });
+                    RectStyle {
+                        bg,
+                        shadow,
+                        radius: 0.0,
+                        stroke: None,
+                        stroke_width: 0.0,
+                    },
+                    theme,
+                );
             }
             let mut cy = y + pad;
             for child in children {
@@ -197,43 +298,40 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             align,
             pad,
             bg,
+            shadow,
             children,
         } => {
             let cols = (*columns).max(1) as usize;
             let pad = pad.unwrap_or(0.0);
             let gap = gap.unwrap_or(theme.space.base);
-            let align = align.unwrap_or(Align::Start);
-            let inner_w = (avail - pad * 2.0 - gap * (cols - 1) as f32).max(1.0);
+            let _align = align.unwrap_or(Align::Start);
+            let inner_w = (avail - pad * 2.0 - gap * (cols as f32 - 1.0)).max(1.0);
             let col_w = inner_w / cols as f32;
-            if let Some(fill) = bg {
+            if bg.is_some() {
                 let h = measure(node, avail, ctx).h;
-                out.push(Prim::Rect {
+                push_rect(
+                    out,
                     x,
                     y,
-                    w: avail,
+                    avail,
                     h,
-                    fill: fill.clone(),
-                    radius: 0.0,
-                    stroke: None,
-                    stroke_width: 0.0,
-                });
+                    RectStyle {
+                        bg,
+                        shadow,
+                        radius: 0.0,
+                        stroke: None,
+                        stroke_width: 0.0,
+                    },
+                    theme,
+                );
             }
-            let mut cy = y + pad;
-            for row in children.chunks(cols) {
-                let mut rh = 0.0f32;
-                for child in row {
-                    rh = rh.max(measure(child, col_w, ctx).h);
-                }
-                for (i, child) in row.iter().enumerate() {
-                    let ext = measure(child, col_w, ctx);
-                    let col_x = x + pad + i as f32 * (col_w + gap);
-                    let cx = match align {
-                        Align::Start | Align::Center => col_x,
-                        Align::End => col_x + (col_w - ext.w),
-                    };
-                    place(child, cx, cy, col_w, ctx, out);
-                }
-                cy += rh;
+            let (rects, _) = grid_metrics(children, cols, col_w, gap, ctx);
+            let origin_x = x + pad;
+            let origin_y = y + pad;
+            for (i, child) in children.iter().enumerate() {
+                let (_, child_node) = span_of(child);
+                let (gx, gy, w, _) = rects[i];
+                place(child_node, origin_x + gx, origin_y + gy, w, ctx, out);
             }
         }
         Node::Text {
@@ -242,13 +340,16 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             text_align,
             color,
             max_measure,
+            tracking,
         } => {
             let align = text_align.unwrap_or(Align::Start);
-            let (lines, widest, _) = measure_text(text, *role, *max_measure, avail, ctx);
+            let tracking = tracking.unwrap_or(0.0);
+            let (lines, widest, _) = measure_text(text, *role, *max_measure, avail, tracking, ctx);
             let size = theme.size(*role);
             let family = theme.family_for(*role).to_string();
             let weight = weight_for(*role);
             let leading = theme.leading(*role);
+            let tracking_px = tracking * size;
             let fill = color
                 .clone()
                 .unwrap_or_else(|| theme.ink_for(*role).to_string());
@@ -271,6 +372,7 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                     weight,
                     fill: fill.clone(),
                     align,
+                    tracking: tracking_px,
                 });
             }
         }
@@ -290,20 +392,26 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
             border,
             radius,
             pad,
+            shadow,
             children,
         } => {
             let pad = pad.unwrap_or(theme.space.base * 3.0);
             let ext = measure(node, avail, ctx);
-            out.push(Prim::Rect {
+            push_rect(
+                out,
                 x,
                 y,
-                w: avail,
-                h: ext.h,
-                fill: bg.clone().unwrap_or_else(|| theme.palette.surface.clone()),
-                radius: radius.unwrap_or(theme.radius.md),
-                stroke: border.clone(),
-                stroke_width: if border.is_some() { 1.0 } else { 0.0 },
-            });
+                avail,
+                ext.h,
+                RectStyle {
+                    bg,
+                    shadow,
+                    radius: radius.unwrap_or(theme.radius.md),
+                    stroke: border.clone(),
+                    stroke_width: if border.is_some() { 1.0 } else { 0.0 },
+                },
+                theme,
+            );
             let mut cy = y + pad;
             for child in children {
                 if cy > y + pad {
@@ -315,6 +423,21 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                 cy += child_ext.h;
             }
         }
+        Node::Image {
+            src,
+            width,
+            height,
+            fit,
+        } => {
+            out.push(Prim::Image {
+                x,
+                y,
+                w: width.unwrap_or(avail),
+                h: *height,
+                href: src.clone(),
+                fit: *fit,
+            });
+        }
         Node::Raw { svg, .. } => {
             out.push(Prim::Raw {
                 x,
@@ -322,5 +445,40 @@ fn place(node: &Node, x: f32, y: f32, avail: f32, ctx: &Ctx, out: &mut Vec<Prim>
                 body: svg.clone(),
             });
         }
+        Node::Cell { child, .. } => place(child, x, y, avail, ctx, out),
+        Node::Component { .. } => {}
     }
+}
+
+/// Push a container rect honouring fill (solid or gradient) and shadow.
+struct RectStyle<'a> {
+    bg: &'a Option<Fill>,
+    shadow: &'a Option<Shadow>,
+    radius: f32,
+    stroke: Option<String>,
+    stroke_width: f32,
+}
+
+fn push_rect(out: &mut Vec<Prim>, x: f32, y: f32, w: f32, h: f32, style: RectStyle, theme: &Theme) {
+    let RectStyle {
+        bg,
+        shadow,
+        radius,
+        stroke,
+        stroke_width,
+    } = style;
+    let default = theme.palette.surface.clone();
+    let (fill, gradient) = paint(bg, &default);
+    out.push(Prim::Rect {
+        x,
+        y,
+        w,
+        h,
+        fill,
+        radius,
+        stroke,
+        stroke_width,
+        gradient,
+        shadow: shadow.clone(),
+    });
 }

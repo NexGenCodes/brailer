@@ -12,7 +12,7 @@ use std::path::Path;
 
 pub use fonts::FontBook;
 pub use primitive::Scene;
-pub use spec::Document;
+pub use spec::{Document, Frame};
 pub use theme::Theme;
 
 pub struct Pipeline {
@@ -33,12 +33,12 @@ impl Pipeline {
         Ok(Pipeline { theme, fonts })
     }
 
-    pub fn scene(&self, doc: &Document) -> Scene {
+    pub fn scene(&self, frame: &Frame) -> Scene {
         let ctx = layout::Ctx {
             theme: &self.theme,
             fonts: &self.fonts,
         };
-        layout::build(doc, &ctx)
+        layout::build(frame, &ctx)
     }
 
     pub fn verify(&self, scene: &Scene) -> verify::Report {
@@ -62,8 +62,15 @@ impl Pipeline {
 
 pub fn load(path: &Path) -> Result<Document> {
     let raw = std::fs::read_to_string(path)?;
-    let doc: Document = serde_json::from_str(&raw)?;
-    let errors = spec::validate(&doc);
+    let mut doc: Document = serde_json::from_str(&raw)?;
+    let base = path
+        .parent()
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| Path::new(".").to_path_buf());
+    let mut errors = Vec::new();
+    spec::expand_components(&mut doc, &mut errors);
+    spec::resolve_images(&mut doc, &base, &mut errors);
+    errors.extend(spec::validate(&doc));
     if !errors.is_empty() {
         bail!("invalid spec:\n  {}", errors.join("\n  "));
     }
@@ -71,5 +78,5 @@ pub fn load(path: &Path) -> Result<Document> {
 }
 
 pub fn known_themes() -> Vec<&'static str> {
-    vec!["editorial"]
+    vec!["canary", "editorial"]
 }

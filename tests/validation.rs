@@ -162,7 +162,11 @@ fn verify_catches_malformed_raw_and_oversized_canvas() {
         r##"{"kind":"raw","svg":"<not valid <<<<","height":50}"##,
     ));
     let pipe = brailer::Pipeline::new(&doc.theme).expect("theme");
-    let scene = pipe.scene(&doc);
+    let frame = doc
+        .frames_effective()
+        .remove("design")
+        .expect("a design frame");
+    let scene = pipe.scene(&frame);
     let rep = brailer::verify::scene(&scene, 0.75);
     assert!(!rep.ok(), "malformed raw svg must fail verification");
     assert!(
@@ -217,6 +221,7 @@ fn text_prim(x: f32, y: f32, w: f32, h: f32) -> brailer::primitive::Prim {
         weight: 400,
         fill: "#14110F".into(),
         align: brailer::spec::Align::Start,
+        tracking: 0.0,
     }
 }
 
@@ -316,4 +321,13 @@ fn render_pre_flights_scale_before_writing_anything() {
         "nothing should be written when pre-flight fails"
     );
     std::fs::remove_dir_all(&dir).ok();
+}
+
+#[test]
+fn every_builtin_theme_passes_contrast() {
+    for name in brailer::known_themes() {
+        let theme = brailer::theme::builtin(name).unwrap_or_else(|| panic!("unknown theme {name}"));
+        let issues = brailer::verify::theme(&theme);
+        assert!(issues.is_empty(), "theme {name}: {issues:?}");
+    }
 }

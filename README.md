@@ -18,6 +18,9 @@ They *are* good at meaning. So the split is:
 
 No hand-written SVG. No CSS. No layout in the prompt.
 
+It targets the screens an AI agent is actually asked to produce: **auth**, **home**,
+**checkout**, plus landing pages, product cards, posters and social graphics.
+
 ## Why Rust
 
 Because `resvg` is pure Rust. That single fact decides everything else:
@@ -54,15 +57,20 @@ curl -fsSL https://github.com/NexGenCodes/brailer/releases/latest/install.sh | s
 ## Quickstart
 
 ```sh
-brailer themes                       # editorial
+brailer themes                       # canary · editorial
 brailer fonts                        # discovery + what resvg actually registered
 
-brailer verify examples/editorial.json
-# prims=30 size=1440x1087 errors=0 out_of_bounds=0 collisions=0 contrast=0 -- PASS
+cat > /tmp/first.json <<'JSON'
+{ "canvas": { "width": 1440 },
+  "theme": "canary",
+  "root": { "kind": "stack", "gap": 16, "pad": 48,
+    "children": [
+      { "kind": "text", "role": "display", "text": "Cedar & Lead" },
+      { "kind": "text", "role": "body", "text": "Pencils, sharpened daily." } ] } }
+JSON
 
-brailer render examples/editorial.json --retina
-# layout 1ms · svg 1ms · total 312ms · verify PASS
-# -> examples/out/editorial
+brailer verify /tmp/first.json          # prims=2 ... -- PASS
+brailer render /tmp/first.json -o out/  # -> out/design@1x.png, out/design.svg
 ```
 
 Exit codes are the contract: `0` passed, `1` verification failed, `2` rejected
@@ -87,70 +95,57 @@ before layout (invalid spec). Nothing ever panics on hostile input.
 }
 ```
 
-Seven node kinds, deliberately small and compositional:
+Ten node types, deliberately small and compositional:
 
-`stack` · `grid` · `text` · `rule` · `spacer` · `card` · `raw`
+`stack` · `grid` · `cell` · `text` · `image` · `rule` · `spacer` · `card` · `raw` · `component`
 
 Sections are *presets you compose*, never an enum of page types — so a new
 layout is a new spec, not a new release.
 
-Text carries a **role**, not a size:
+Text carries a **role**, not a size (sizes shown for `canary`):
 
-`display` (76) · `h1` (48) · `h2` (32) · `h3` (21) · `body` (16) · `small` (13) · `label` (12)
+`display` (64) · `h1` (40) · `h2` (28) · `h3` (19) · `body` (15) · `small` (13) · `label` (11)
 
 The role picks family (serif for display/headings, sans below) and colour
 (ink → muted → accent) from the theme. That is where consistency comes from.
 
-The full reference for agent platforms is [`SKILL.md`](SKILL.md).
-
-## Images and logos
-
-Yes — images work today, through the `raw` node. Embed the file as a data URI:
+A spec can ship **responsive frames** — desktop **and** mobile — in one file:
 
 ```jsonc
-{ "kind": "raw", "height": 160,
-  "svg": "<image href=\"data:image/png;base64,iVBORw0KGgo...\" width=\"160\" height=\"160\"/>" }
+{
+  "theme": "canary",
+  "frames": {
+    "desktop": { "canvas": { "width": 1440, "background": "#FBF9F3" }, "root": { /* ... */ } },
+    "mobile":  { "canvas": { "width": 390,  "background": "#FBF9F3" }, "root": { /* ... */ } }
+  }
+}
 ```
 
-Verified: a 64×64 PNG embedded this way lands in the raster with its pixels
-intact — a 120×120 placement produced 14,280 matching pixels against 14,400
-expected, the shortfall being antialiased edge pixels. The same works for JPEG, GIF, WebP and nested SVG.
+Legacy `canvas`+`root` specs still work and become a single `design` frame.
+`verify` and `render` loop over every frame; `--frame NAME` targets one.
 
-What this means in practice:
+The full reference for agent platforms is [`SKILL.md`](SKILL.md).
 
-| want | how |
-|---|---|
-| a product photo in a flyer | embed it as a data URI in `raw` |
-| your brand logo | embed the SVG, or inline its paths in `raw` |
-| bespoke illustration | `raw` with any SVG fragment |
+## Images
 
-**Known gaps.** There is no first-class `image` node yet, so you must base64 the
-file yourself rather than pointing at a path. There is also no `fit` mode
-(`cover`/`contain`) — the element you embed carries its own width/height. A
-proper `image` node with path resolution, an asset directory and fit modes is
-the next feature.
+First-class `image` node — photos are content, not escape hatches:
 
-## Proof: the KORA landing page
+```jsonc
+{ "kind": "image", "src": "photo.jpg", "width": 420, "height": 260, "fit": "cover" }
+```
 
-`examples/kora.json` is a port of a 10-section ecommerce landing page that was
-previously hand-authored as **4,052 px of absolute SVG coordinates** in Python
-and rasterised with Inkscape. Same page, written as meaning:
+- `src` is a `data:` URI or a path resolved at load time against `asset_dir`
+  (relative to the spec's folder). SVGs are emitted self-contained.
+- `fit`: `cover` (crop to fill, default) · `contain` (letterbox) · `fill`
+  (stretch) — mapped to the matching SVG `preserveAspectRatio`.
 
-| | KORA (original) | brailer |
-|---|---|---|
-| authoring | 457 lines, absolute `x/y` | 1 JSON spec, no coordinates |
-| renderer | Inkscape subprocess | resvg, in-process |
-| output | 1440×4052 | 1440×3307 (82%) |
-| distinct colours | 4,337 | 556 |
-| verify | none | `errors=0 collisions=0 PASS` |
+Verified: base64 JPEG/PNG/WebP and resolved files land in the raster with
+pixels intact; a panelled marketplace home (12 photos, `cover`) renders at
+1440 px with every product image present.
 
-The colour gap is honest: gradients, drop shadows and letter-spaced labels in
-the original are not expressible in the spec vocabulary yet, and the port is
-structurally faithful rather than pixel-identical. The point of the test is the
-authoring model — a declarative spec reached a comparable full-page design
-without a single hardcoded coordinate.
-
-Renders in **984 ms** for SVG + 1× + 2× (layout 3 ms, SVG 1 ms).
+Other visual depth available in the spec: two-stop **linear gradients** as
+`bg` (`{ "from", "to", "angle" }`), `shadow` on containers (blur/x/y/color),
+and `tracking` (letter-spacing in em) on any `text`.
 
 ## What it costs
 
@@ -162,8 +157,8 @@ Apache-2.0).
 **Disk:** 6.2 MB binary, linking only `libm`, `libgcc_s` and the C runtime — no
 X11, no fontconfig, no browser.
 
-**Time:** ~310 ms for a typical 1440×1087 page (1× + 2×), ~1 s for the full
-1440×3307 KORA page. Layout and SVG generation are 1–3 ms; rasterisation is
+**Time:** ~310 ms for a typical 1440×1087 page (1× + 2×), ~1 s for a full-length
+(≈3,300 px) page. Layout and SVG generation are 1–3 ms; rasterisation is
 effectively the whole cost.
 
 **Memory:** 158 MB peak for that full page at 1× + 2× (two rasters held at
@@ -225,12 +220,17 @@ Layout is infallible by design: invalid input never reaches it. Validation
 
 - **You cannot see the output.** Verification is structural, geometric and
   pixel-statistical. Aesthetic review needs a human or a vision model.
+- **Responsive is hand-authored, not automatic.** Desktop and mobile frames
+  are both authored in the spec; the engine does not reflow a layout
+  automatically. Same content, two compositions — that shared content can and
+  should live in `components`.
 - **Bespoke art direction is not automatable.** `raw` is an escape hatch, not a
   creative eye. Engine-owned layout, typography, colour and composition cover
   most of what makes a page work; the rest does not reduce to rules.
-- **Only one theme ships** (`editorial`). More themes are the highest-leverage
-  next feature.
+- **Two themes ship** (`editorial`, `canary`) — the palette, type scale and
+  spacing tokens that typify an editorial brand and an ecommerce store. More
+  themes are the highest-leverage next feature.
 
 ## Licence
 
-Not yet chosen — MIT and Apache-2.0 are the likely candidates.
+Dual-licensed under **MIT OR Apache-2.0** — pick whichever suits your project.

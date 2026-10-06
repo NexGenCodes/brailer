@@ -1,11 +1,13 @@
 [package]
 name = "brailer"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
-description = "Deterministic design compiler: semantic JSON spec in, SVG/PNG out, no browser"
+description = "Deterministic design compiler: semantic JSON spec in, SVG/PNG out, no browser — app screens, landing pages and store UI"
+license = "MIT OR Apache-2.0"
 readme = "README.md"
+repository = "https://github.com/NexGenCodes/brailer"
 authors = ["NexGenCodes <74940049+NexGenCodes@users.noreply.github.com>"]
-keywords = ["design", "svg", "layout", "typography", "raster"]
+keywords = ["design", "svg", "layout", "typography", "ui"]
 categories = ["command-line-utilities", "graphics", "text-processing"]
 
 [dependencies]
