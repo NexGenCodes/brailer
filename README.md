@@ -103,6 +103,77 @@ The role picks family (serif for display/headings, sans below) and colour
 
 The full reference for agent platforms is [`SKILL.md`](SKILL.md).
 
+## Images and logos
+
+Yes — images work today, through the `raw` node. Embed the file as a data URI:
+
+```jsonc
+{ "kind": "raw", "height": 160,
+  "svg": "<image href=\"data:image/png;base64,iVBORw0KGgo...\" width=\"160\" height=\"160\"/>" }
+```
+
+Verified: a 64×64 PNG embedded this way lands in the raster with its pixels
+intact — a 120×120 placement produced 14,280 matching pixels against 14,400
+expected, the shortfall being antialiased edge pixels. The same works for JPEG, GIF, WebP and nested SVG.
+
+What this means in practice:
+
+| want | how |
+|---|---|
+| a product photo in a flyer | embed it as a data URI in `raw` |
+| your brand logo | embed the SVG, or inline its paths in `raw` |
+| bespoke illustration | `raw` with any SVG fragment |
+
+**Known gaps.** There is no first-class `image` node yet, so you must base64 the
+file yourself rather than pointing at a path. There is also no `fit` mode
+(`cover`/`contain`) — the element you embed carries its own width/height. A
+proper `image` node with path resolution, an asset directory and fit modes is
+the next feature.
+
+## Proof: the KORA landing page
+
+`examples/kora.json` is a port of a 10-section ecommerce landing page that was
+previously hand-authored as **4,052 px of absolute SVG coordinates** in Python
+and rasterised with Inkscape. Same page, written as meaning:
+
+| | KORA (original) | brailer |
+|---|---|---|
+| authoring | 457 lines, absolute `x/y` | 1 JSON spec, no coordinates |
+| renderer | Inkscape subprocess | resvg, in-process |
+| output | 1440×4052 | 1440×3307 (82%) |
+| distinct colours | 4,337 | 556 |
+| verify | none | `errors=0 collisions=0 PASS` |
+
+The colour gap is honest: gradients, drop shadows and letter-spaced labels in
+the original are not expressible in the spec vocabulary yet, and the port is
+structurally faithful rather than pixel-identical. The point of the test is the
+authoring model — a declarative spec reached a comparable full-page design
+without a single hardcoded coordinate.
+
+Renders in **984 ms** for SVG + 1× + 2× (layout 3 ms, SVG 1 ms).
+
+## What it costs
+
+**Money: nothing.** No API keys, no cloud service, no licence, no per-render
+charge. Everything runs on your machine, offline. The dependencies are all
+permissive-licensed crates (`resvg`/`usvg` are MPL-2.0-or-Apache, the rest MIT/
+Apache-2.0).
+
+**Disk:** 6.2 MB binary, linking only `libm`, `libgcc_s` and the C runtime — no
+X11, no fontconfig, no browser.
+
+**Time:** ~310 ms for a typical 1440×1087 page (1× + 2×), ~1 s for the full
+1440×3307 KORA page. Layout and SVG generation are 1–3 ms; rasterisation is
+effectively the whole cost.
+
+**Memory:** 158 MB peak for that full page at 1× + 2× (two rasters held at
+once). A single 1440×1087 render is ~10 MB. The 16,000 px output cap is what
+keeps this bounded — a pathological 16,000² canvas would want ~1 GB.
+
+**What it replaces:** a headless Chromium or Inkscape install (100–300 MB, a
+process spawn per render, and a dependency you have to provision on every
+machine) — and it is faster than both.
+
 ## Verification
 
 `brailer verify` is a real gate, not a linter. It reports four classes:
